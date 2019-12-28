@@ -10,7 +10,6 @@ buildscript {
         google()
     }
     dependencies {
-        
 
     }
 }
@@ -43,6 +42,7 @@ project(":desktop") {
 
 
     dependencies {
+        compile 'junit:junit:4.12'
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -61,6 +61,7 @@ project(":core") {
 
 
     dependencies {
+        compile 'junit:junit:4.12'
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
