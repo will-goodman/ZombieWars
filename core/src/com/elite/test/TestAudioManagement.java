@@ -1,29 +1,25 @@
 package com.elite.test;
 
 import com.elite.audio.AudioManagement;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.junit.Test;
 
-import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-
+@PrepareForTest(AudioManagement.class)
 public class TestAudioManagement {
-
-    private static AudioManagement audioManagement = new AudioManagement();
-    private static String music = "testMusic";
-    private static String music1 = "testMusic";
-    private static String sound = "testSound";
-
 
     @Test
     public void constructorTest() {
         try{
-            //audioManagement.initialiseAudio();
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            assertEquals(new AudioManagement(), mockAudioManagement);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +28,15 @@ public class TestAudioManagement {
     @Test
     public void allowMusicSwitchTest() {
         try {
-            audioManagement.allowMusicSwitch();
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            assertTrue(testAudioManagement.allowMusicSwitch());
+            verify(testAudioManagement, times(1)).stopAllMusic();
+            assertFalse(testAudioManagement.allowMusicSwitch());
+            verify(testAudioManagement, times(1)).startMusic();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -41,85 +45,125 @@ public class TestAudioManagement {
     @Test
     public void allowSoundsSwitchTest() {
         try {
-            audioManagement.allowSoundsSwitch();
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            assertTrue(testAudioManagement.allowSoundsSwitch());
+            assertFalse(testAudioManagement.allowSoundsSwitch());
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
+    //TODO startMusicTests for both methods
     @Test
     public void startMusicTest() {
-        try {
-            audioManagement.startMusic(music);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        fail("Not Implemented.");
     }
 
+    //TODO playSoundTest
     @Test
     public void playSoundTest() {
-        try {
-            audioManagement.playSound(sound);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        fail("Not Implemented.");
     }
 
-    @Test
-    public void setMusicVolumeTest() {
-        try {
-            //audioManagement.setMusicVolume(50, music);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        //assertEquals(50, audioManagement.getMusicVolume());
-    }
-
+    //TODO Improve to test music list
     @Test
     public void changeMusicVolumeTest() {
         try {
-            audioManagement.changeMusicVolume(11, music);
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(true);
+            testAudioManagement.changeMusicVolume(0.5f, "test_music");
         } catch(Exception e) {
             e.printStackTrace();
         }
-        assertEquals(61, audioManagement.getMusicVolume(music));
     }
 
-    /*@Test
-    public void getMusicVolumeTest() {
-        assertEquals(61, audioManagement.getMusicVolume());
-    }*/
+    //TODO setMusicVolumeTest
+    @Test
+    public void setMusicVolumeTest() {
+        fail("Not Implemented.");
+    }
 
-    /*@Test
-    public void switchMusicTest() {
+    //TODO MusicVolumeTest with a music file
+    @Test
+    public void getMusicVolumeTest() {
         try {
-            audioManagement.switchMusic(music1);
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+            assertEquals(0.0f, testAudioManagement.getMusicVolume("fake_music"), 0.0);
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
+    //TODO setSoundVolumeTest
+    @Test
+    public void setSoundVolumeTest() {
+        fail("Not Implemented.");
+    }
+
+    //TODO Improve to test music list
+    @Test
+    public void switchMusicTest() {
+        try {
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(true);
+            testAudioManagement.switchMusic("test_music");
+            Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(false);
+            testAudioManagement.switchMusic("test_music");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //TODO Improve to test music list
     @Test
     public void pauseMusicTest() {
         try {
-            audioManagement.pauseMusic(music1);
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
+
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(true);
+            testAudioManagement.pauseMusic("test_music");
+            Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(false);
+            testAudioManagement.pauseMusic("test_music");
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void switchMusicTest() {
-        try {
-            audioManagement.switchMusic(music1);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void stopAllMusicTest() {
+        fail("Not Implemented.");
     }
 
+    //TODO Improve to test music list
     @Test
     public void isMusicPlayingTest() {
-        assertTrue(audioManagement.isMusicPlaying(music1));
-    }
+        try {
+            AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
+            PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
 
+            AudioManagement testAudioManagement = new AudioManagement();
+
+            assertFalse(testAudioManagement.isMusicPlaying("test_music"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

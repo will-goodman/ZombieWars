@@ -40,7 +40,7 @@ public class AudioManagement {
      * The method which allows music to switch. If there is a music file already playing, it will not allow a new music
      * file to play.
      */
-    public void allowMusicSwitch(){
+    public boolean allowMusicSwitch(){
         if(musicToPlay){
             musicToPlay = false;
             stopAllMusic();
@@ -49,19 +49,23 @@ public class AudioManagement {
             musicToPlay = true;
             startMusic();
         }
+
+        return musicToPlay;
     }
 
     /**
      * The method which allows sounds to switch. If there is a sound file already playing, it will not allow a new sound
      * file to play.
      */
-    public void allowSoundsSwitch(){
+    public boolean allowSoundsSwitch(){
         if(soundsToPlay){
             soundsToPlay = false;
         }
         else{
             soundsToPlay = true;
         }
+
+        return soundsToPlay;
     }
 
     /**
