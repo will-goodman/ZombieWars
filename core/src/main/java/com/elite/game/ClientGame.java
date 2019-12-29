@@ -24,23 +24,21 @@ import java.util.Random;
 
 /**
  * The game object on the client-side
+ *
  * @author Will Goodman
  */
-public class ClientGame extends RenderWorld implements GameType{
+public class ClientGame extends RenderWorld implements GameType {
 
-    private final long turnTime = 60000000000L;
     private static final double maxEnergy = 100;
     private static long previousTime = System.nanoTime();
     private static final float TIME_STEP = 1.0f / 60.0f;
 
-    private long currentTime = System.nanoTime();
     private static int currentPlayer;
     private ArrayList<Integer> clientTeam = new ArrayList<>();
     private ArrayList<Integer> enemyTeam = new ArrayList<>();
     private double energy = 100;
     private World world;
     private Hashtable<Integer, Integer> footContacts = new Hashtable<>();
-    private ContactListener myContactListener;
     private final Client CLIENT;
     private Hashtable<String, Zombie> zombies = new Hashtable<>();
     private Hashtable<String, Zombie> deadZombies = new Hashtable<>();
@@ -66,27 +64,28 @@ public class ClientGame extends RenderWorld implements GameType{
 
     private BitmapFont timeText = new BitmapFont();
     DecimalFormat value = new DecimalFormat("#.#");
-    Vector3 mouse_position = new Vector3(0,0,0);
+    Vector3 mouse_position = new Vector3(0, 0, 0);
 
     /**
      * The Constructor for the Client side of the Game. It contains information about the client name, the zombie name,
      * the floor collisions, and whether the zombie has been created
-     * @param client The client object which will be used to connect to the server
+     *
+     * @param client     The client object which will be used to connect to the server
      * @param zombieName The name of the player
      */
-    public ClientGame(Client client, String zombieName){
+    public ClientGame(Client client, String zombieName) {
         this.CLIENT = client;
         this.zombieName = zombieName;
-        myContactListener = new MyContactListener();
+        ContactListener myContactListener = new MyContactListener();
         // Create physics world simulation with gravity value
         world = new World(new Vector2(0, -200f), true);
         world.setContactListener(myContactListener);
 
         //If the player is the second player to join the server, we must also generate the opponent's zombies, and get the crate entities from the opponent
         Zombie newZombie;
-        if(zombieName.equals("Player2")) {
+        if (zombieName.equals("Player2")) {
 
-            for (int i = 0,j = 101; j < 104; j++, i ++) {
+            for (int i = 0, j = 101; j < 104; j++, i++) {
                 newZombie = new Zombie(world, 150f + 200 * i, 700f, this, j, false);
                 enemyTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
@@ -94,7 +93,7 @@ public class ClientGame extends RenderWorld implements GameType{
                 footContacts.put(j, 0);
             }
 
-            for (int i = 0,j = 5; j < 8; j++, i ++) {
+            for (int i = 0, j = 5; j < 8; j++, i++) {
                 newZombie = new Zombie(world, 750f + 200 * i, 700f, this, j, true);
                 System.out.println("Zombie X: " + (750f + 200 * i));
                 clientTeam.add(j);
@@ -110,7 +109,7 @@ public class ClientGame extends RenderWorld implements GameType{
             previousTime = System.nanoTime();
         } else {
             //Otherwise we can just generate the client's zombies and the crates ourselves
-            for (int i = 0,j = 101; j < 104; j++, i ++) {
+            for (int i = 0, j = 101; j < 104; j++, i++) {
                 newZombie = new Zombie(world, 150f + 200 * i, 700f, this, j, true);
                 clientTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
@@ -123,9 +122,9 @@ public class ClientGame extends RenderWorld implements GameType{
 
             HealthCrate healthCrate;
             AmmoCrate ammoCrate;
-            for(int i=8; i < 11; i+=2) {
+            for (int i = 8; i < 11; i += 2) {
                 healthCrate = new HealthCrate(world, randPosition.nextInt(1500), 700f, i);
-                ammoCrate = new AmmoCrate(world, randPosition.nextInt(1500), 700f, i+1);
+                ammoCrate = new AmmoCrate(world, randPosition.nextInt(1500), 700f, i + 1);
                 crates.put(i, healthCrate);
                 crates.put(i + 1, ammoCrate);
             }
@@ -141,6 +140,7 @@ public class ClientGame extends RenderWorld implements GameType{
 
     /**
      * Getter method for the List of Zombies in the game
+     *
      * @return An ArrayList of all the Zombies in the game
      */
     public ArrayList<Zombie> getAllPlayers() {
@@ -149,25 +149,35 @@ public class ClientGame extends RenderWorld implements GameType{
 
     /**
      * Getter method for the List of Players
+     *
      * @return A HashTable of Zombies with their UserData as the key
      */
-    public Hashtable<String, Zombie> getPlayers() { return this.zombies; }
+    public Hashtable<String, Zombie> getPlayers() {
+        return this.zombies;
+    }
 
     /**
      * Getter method for the UserData of the currentPlayer
+     *
      * @return The UserData of the currentPlayer
      */
-    public int getPlayerNow() { return currentPlayer; }
+    public int getPlayerNow() {
+        return currentPlayer;
+    }
 
     /**
      * Getter method for the crates in the game
+     *
      * @return All Ammo and Health crates in the game
      */
-    public Hashtable<Integer, Crate> getCrates() { return this.crates; }
+    public Hashtable<Integer, Crate> getCrates() {
+        return this.crates;
+    }
 
 
     /**
      * Getter method for the currentPlayer's zombie object
+     *
      * @return The currentPlayer's zombie object
      */
     public Zombie getZombie() {
@@ -175,13 +185,13 @@ public class ClientGame extends RenderWorld implements GameType{
     }
 
 
-
     /**
      * The method which updates the zombie depending on the commands it has been given, or creates a zombie in case
      * one has not been created yet. The commands are: move left, move right, stop, and jump
-     * @param owner The owner/name of the zombie
-     * @param x The zombie's x coordinate
-     * @param y The zombie's y coordinate
+     *
+     * @param owner   The owner/name of the zombie
+     * @param x       The zombie's x coordinate
+     * @param y       The zombie's y coordinate
      * @param command The zombie's new command
      */
     public void updateZombie(String owner, float x, float y, String command) {
@@ -191,7 +201,7 @@ public class ClientGame extends RenderWorld implements GameType{
 
         //If the zombie on the local client has de-synced by a set amount of pixels, then we re-sync it
         Zombie zombie = zombies.get(owner);
-        if(zombie != null) {
+        if (zombie != null && command != null) {
             if ((Math.abs(zombie.getPlayerX() - x) > 25 || Math.abs(zombie.getPlayerY() - y) > 25) && (!command.equals("NO-MOVEMENT"))) {
                 editZombie = true;
                 editZombieUserData = owner;
@@ -206,26 +216,25 @@ public class ClientGame extends RenderWorld implements GameType{
      * The method which displays the environmental world
      */
     @Override
-    public void show () {
+    public void show() {
         super.show(); //renders world
 
         // Create floor object
-
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        groundBodyDef.position.set(new Vector2(0,632));
+        groundBodyDef.position.set(new Vector2(0, 632));
 
 
         Body groundBody1 = world.createBody(groundBodyDef);
         PolygonShape groundBox1 = new PolygonShape();
-        groundBox1.setAsBox(512/2f, 1f);
+        groundBox1.setAsBox(512 / 2f, 1f);
         FixtureDef groundFixtureDef1 = new FixtureDef();
         groundFixtureDef1.density = 0f;
         groundFixtureDef1.shape = groundBox1;
         Fixture groundFixture1 = groundBody1.createFixture(groundFixtureDef1);
         groundFixture1.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(460,470));
+        groundBodyDef.position.set(new Vector2(460, 470));
         Body groundBody2 = world.createBody(groundBodyDef);
         PolygonShape groundBox2 = new PolygonShape();
         groundBox2.setAsBox(100f, 1f);
@@ -233,7 +242,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture2 = groundBody2.createFixture(groundFixtureDef1);
         groundFixture2.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(460,430));
+        groundBodyDef.position.set(new Vector2(460, 430));
         Body groundBody2_1 = world.createBody(groundBodyDef);
         PolygonShape groundBox2_1 = new PolygonShape();
         groundBox2_1.setAsBox(100f, 1f);
@@ -241,7 +250,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture2_1 = groundBody2_1.createFixture(groundFixtureDef1);
         groundFixture2_1.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(0,385));
+        groundBodyDef.position.set(new Vector2(0, 385));
         Body groundBody3 = world.createBody(groundBodyDef);
         PolygonShape groundBox3 = new PolygonShape();
         groundBox3.setAsBox(260f, 1f);
@@ -249,7 +258,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture3 = groundBody3.createFixture(groundFixtureDef1);
         groundFixture3.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(510f,230f));
+        groundBodyDef.position.set(new Vector2(510f, 230f));
         Body groundBody4 = world.createBody(groundBodyDef);
         PolygonShape groundBox4 = new PolygonShape();
         groundBox4.setAsBox(260f, 1f);
@@ -257,7 +266,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture4 = groundBody4.createFixture(groundFixtureDef1);
         groundFixture4.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(260f,305f));
+        groundBodyDef.position.set(new Vector2(260f, 305f));
         Body wallBody1 = world.createBody(groundBodyDef);
         PolygonShape wallBox1 = new PolygonShape();
         wallBox1.setAsBox(1f, 80f);
@@ -265,7 +274,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture wallFixture1 = wallBody1.createFixture(groundFixtureDef1);
         wallFixture1.setUserData(4);
 
-        groundBodyDef.position.set(new Vector2(760f,390f));
+        groundBodyDef.position.set(new Vector2(760f, 390f));
         Body wallBody2 = world.createBody(groundBodyDef);
         PolygonShape wallBox2 = new PolygonShape();
         wallBox2.setAsBox(1f, 160f);
@@ -274,7 +283,7 @@ public class ClientGame extends RenderWorld implements GameType{
         wallFixture2.setUserData(4);
 
 
-        groundBodyDef.position.set(new Vector2(985,550));
+        groundBodyDef.position.set(new Vector2(985, 550));
         Body groundBody5 = world.createBody(groundBodyDef);
         PolygonShape groundBox5 = new PolygonShape();
         groundBox5.setAsBox(225, 1f);
@@ -282,7 +291,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture5 = groundBody5.createFixture(groundFixtureDef1);
         groundFixture5.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(1400,385));
+        groundBodyDef.position.set(new Vector2(1400, 385));
         Body groundBody6 = world.createBody(groundBodyDef);
         PolygonShape groundBox6 = new PolygonShape();
         groundBox6.setAsBox(200, 1f);
@@ -290,7 +299,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture groundFixture6 = groundBody6.createFixture(groundFixtureDef1);
         groundFixture6.setUserData(1);
 
-        groundBodyDef.position.set(new Vector2(1215f,465f));
+        groundBodyDef.position.set(new Vector2(1215f, 465f));
         Body wallBody3 = world.createBody(groundBodyDef);
         PolygonShape wallBox3 = new PolygonShape();
         wallBox3.setAsBox(1f, 85f);
@@ -298,7 +307,7 @@ public class ClientGame extends RenderWorld implements GameType{
         Fixture wallFixture3 = wallBody3.createFixture(groundFixtureDef1);
         wallFixture3.setUserData(4);
 
-        groundBodyDef.position.set(new Vector2(0,Gdx.graphics.getHeight()));
+        groundBodyDef.position.set(new Vector2(0, Gdx.graphics.getHeight()));
         Body groundBody7 = world.createBody(groundBodyDef);
         PolygonShape groundBox7 = new PolygonShape();
         groundBox7.setAsBox(Gdx.graphics.getWidth(), 1f);
@@ -325,21 +334,22 @@ public class ClientGame extends RenderWorld implements GameType{
      * The method which manages the rendered world. It creates and handles the zombies and the crates. It checks what key
      * is pressed and calls the appropriate behaviour. The behaviours include: move left, move right, stop, jump,
      * switch music, full volume, mute volume.
+     *
      * @param delta The time in seconds since the last render.
      */
     @Override
-    public void render (float delta) {
+    public void render(float delta) {
         super.render(delta);
 
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0); //fetch mouse position from frame
 
         //Set the mouse aim on the currentPlayer
-        if(zombies.get(currentPlayer) != null) {
+        if (zombies.get(currentPlayer) != null) {
             zombies.get(Integer.toString(currentPlayer)).setMousePosition(mouse_position);
         }
 
         //If a Zombie has de-synced, then re-render it in the right position
-        if(editZombie) {
+        if (editZombie) {
             Zombie newZombie = new Zombie(world, editZombieX, editZombieY, this, Integer.parseInt(editZombieUserData), zombies.get(editZombieUserData).getIsPlayerControlled());
             zombies.put(editZombieUserData, newZombie);
             editZombie = false;
@@ -348,7 +358,7 @@ public class ClientGame extends RenderWorld implements GameType{
         //Add the host player's zombies
         if (addZombie && !zombieName.equals("Player2")) {
             Zombie newZombie;
-            for (int i = 0,j = 5; j < 8; j++, i ++) {
+            for (int i = 0, j = 5; j < 8; j++, i++) {
                 newZombie = new Zombie(world, 750f + 200 * i, 700f, this, j, false);
                 System.out.println("Zombie X: " + (750f + 200 * i));
                 enemyTeam.add(j);
@@ -367,9 +377,9 @@ public class ClientGame extends RenderWorld implements GameType{
         if (addCrate) {
             GameObject currentCrate;
             Crate newCrate;
-            for(String key : newCrates.keySet()) {
+            for (String key : newCrates.keySet()) {
                 currentCrate = newCrates.get(key);
-                if(currentCrate.getCommand().equals("HEALTH")) {
+                if (currentCrate.getCommand().equals("HEALTH")) {
                     newCrate = new HealthCrate(world, currentCrate.getX(), currentCrate.getY(), Integer.parseInt(key));
                 } else {
                     newCrate = new AmmoCrate(world, currentCrate.getX(), currentCrate.getY(), Integer.parseInt(key));
@@ -380,16 +390,17 @@ public class ClientGame extends RenderWorld implements GameType{
         }
 
         //Only allow input and start the timer once both players are in the game
-        if(bothPlayersJoined) {
-            currentTime = System.nanoTime();
-            if(currentTime - previousTime >= turnTime){
+        if (bothPlayersJoined) {
+            long currentTime = System.nanoTime();
+            long turnTime = 60000000000L;
+            if (currentTime - previousTime >= turnTime) {
                 clientTurn = !clientTurn;
                 CLIENT.keyPress("NO-MOVEMENT", currentPlayer);
                 previousTime = System.nanoTime();
             }
 
 
-            if(clientTurn) {
+            if (clientTurn) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     CLIENT.keyPress("LEFT", currentPlayer);
                     energy -= EnergyCost.getWalkCost();
@@ -400,7 +411,6 @@ public class ClientGame extends RenderWorld implements GameType{
                     CLIENT.keyPress("SHOOT", currentPlayer);
                 } else if (Gdx.input.isKeyPressed(Input.Keys.G)) {
                     CLIENT.keyPress("G", currentPlayer);
-                    //energy -= EnergyCost.getGrenadeCost();
                 } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                     CLIENT.keyPress("SPACE", currentPlayer);
                 } else {
@@ -409,18 +419,17 @@ public class ClientGame extends RenderWorld implements GameType{
             }
 
             super.spriteBatch.begin();
-            if(gameIsOver){
+            if (gameIsOver) {
                 String showString;
-                if(clientTeam.isEmpty()){
+                if (clientTeam.isEmpty()) {
                     showString = "Game Over! Opponent wins!";
-                    if(!endMusicPlayed) {
+                    if (!endMusicPlayed) {
                         AudioAccessor.playSound("loss");
                         endMusicPlayed = true;
                     }
-                }
-                else{
+                } else {
                     showString = "Game Over! You win!";
-                    if(!endMusicPlayed) {
+                    if (!endMusicPlayed) {
                         AudioAccessor.playSound("win");
                         endMusicPlayed = true;
                     }
@@ -428,9 +437,9 @@ public class ClientGame extends RenderWorld implements GameType{
                 timeText.draw(super.spriteBatch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
 
             } else {
-                timeText.draw(super.spriteBatch, "Time Left: " + String.valueOf(value.format(60 - (currentTime - previousTime) / 1_000_000_000)), (WorldAttributes.WORLD_WIDTH / 3) - 120, 780);
-                if(clientTurn) {
-                    this.energyBar.renderEnergy(energy,super.spriteBatch); //draw energy bar
+                timeText.draw(super.spriteBatch, "Time Left: " + value.format(60 - (currentTime - previousTime) / 1_000_000_000), (int) (((double) WorldAttributes.WORLD_WIDTH / (double) 3) - 120), 780);
+                if (clientTurn) {
+                    this.energyBar.renderEnergy(energy, super.spriteBatch); //draw energy bar
                 }
             }
             super.spriteBatch.end();
@@ -445,12 +454,16 @@ public class ClientGame extends RenderWorld implements GameType{
             currentZombie = zombies.get(key);
             command = commands.get(key);
 
-            if (command.equals("LEFT")) {
-                currentZombie.moveLeft();
-            } else if (command.equals("RIGHT")) {
-                currentZombie.moveRight();
-            } else if (command.equals("NO-MOVEMENT")) {
-                currentZombie.noMovement();
+            switch (command) {
+                case "LEFT":
+                    currentZombie.moveLeft();
+                    break;
+                case "RIGHT":
+                    currentZombie.moveRight();
+                    break;
+                case "NO-MOVEMENT":
+                    currentZombie.noMovement();
+                    break;
             }
 
             // code for jumping
@@ -475,53 +488,54 @@ public class ClientGame extends RenderWorld implements GameType{
 
         //Render all the crates
         Crate currentCrate;
-        for(int key : crates.keySet()) {
+        for (int key : crates.keySet()) {
             currentCrate = crates.get(key);
             currentCrate.updateCrate();
         }
 
 
         //Inputs which can be handled locally
-        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             AudioAccessor.switchMusic("testMusic");
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.O)){
+        if (Gdx.input.isKeyPressed(Input.Keys.O)) {
             AudioAccessor.changeMusicVolume(100.0f, "testMusic");
             System.out.println(AudioAccessor.getMusicVolume("testMusic"));
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.P)){
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
             AudioAccessor.changeMusicVolume(-100.0f, "testMusic");
             System.out.println(AudioAccessor.getMusicVolume("testMusic"));
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || quitLobby) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || quitLobby) {
             CLIENT.quitLobby();
-            ((Game)Gdx.app.getApplicationListener()).setScreen(new ServerListing(new Client()));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(new Client()));
         }
 
         checkEnergy();
 
-        world.step(TIME_STEP,6,2);
+        world.step(TIME_STEP, 6, 2);
 
         //Delete bodies of dead zombies and used crates
-        if(usedCrates.size() > 0){
-            for(int i = 0; i < usedCrates.size(); i++){
-                world.destroyBody(usedCrates.get(i).getBody());
+        if (usedCrates.size() > 0) {
+            for (Crate usedCrate : usedCrates) {
+                world.destroyBody(usedCrate.getBody());
             }
             usedCrates.clear();
         }
 
-        if(deadPlayers.size() > 0){
-            for(int i = 0; i < deadPlayers.size(); i++){
-                world.destroyBody(deadPlayers.get(i).getBody());
+        if (deadPlayers.size() > 0) {
+            for (Zombie deadPlayer : deadPlayers) {
+                world.destroyBody(deadPlayer.getBody());
             }
             deadPlayers.clear();
         }
 
     }
 
+    //TODO Look at removing reduceEnergy
     public void reduceEnergy(double value) {
 
     }
@@ -535,6 +549,7 @@ public class ClientGame extends RenderWorld implements GameType{
 
     /**
      * Sets the game to render the crates from the host player
+     *
      * @param crates The information about which crates to render and where
      */
     public void addCrates(HashMap<String, GameObject> crates) {
@@ -544,30 +559,28 @@ public class ClientGame extends RenderWorld implements GameType{
 
     /**
      * Checks if a zombie object is present in the current game
+     *
      * @param key The name of the zombie
      * @return Whether or not the zombie is present
      */
     public boolean isZombiePresent(String key) {
-        if (zombies.get(key) == null && deadZombies.get(key) == null && newZombies.get(key) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return zombies.get(key) != null || deadZombies.get(key) != null || newZombies.get(key) != null;
     }
 
     /**
      * Checks whether any zombies are hit by damage from a grenade and if so, reduces their health
+     *
      * @param grenadeThrower The Zombie which threw the grenade
-     * @param x The x coordinate of the grenade
-     * @param y The y coordinate of the grenade
+     * @param x              The x coordinate of the grenade
+     * @param y              The y coordinate of the grenade
      */
-    public void checkGrenade(Zombie grenadeThrower,float x, float y){
+    public void checkGrenade(Zombie grenadeThrower, float x, float y) {
 
-        for(String i : zombies.keySet()){
-            if(zombies.get(i).getUserData() != grenadeThrower.getUserData()){
+        for (String i : zombies.keySet()) {
+            if (zombies.get(i).getUserData() != grenadeThrower.getUserData()) {
                 Zombie zombie = zombies.get(i);
-                if((zombie.getPlayerX() < x + 100 && zombie.getPlayerX() > x - 100) && (zombie.getPlayerY() < y + 100 && zombie.getPlayerY() > y - 100)){
-                    if((clientTeam.contains(zombie.getUserData()) && enemyTeam.contains(grenadeThrower.getUserData())) || (enemyTeam.contains(zombie.getUserData()) && clientTeam.contains(grenadeThrower.getUserData()))){
+                if ((zombie.getPlayerX() < x + 100 && zombie.getPlayerX() > x - 100) && (zombie.getPlayerY() < y + 100 && zombie.getPlayerY() > y - 100)) {
+                    if ((clientTeam.contains(zombie.getUserData()) && enemyTeam.contains(grenadeThrower.getUserData())) || (enemyTeam.contains(zombie.getUserData()) && clientTeam.contains(grenadeThrower.getUserData()))) {
                         zombie.getHit(35);
                         System.out.println("Grenade hit");
                         checkAlive(zombie);
@@ -589,48 +602,48 @@ public class ClientGame extends RenderWorld implements GameType{
     /**
      * Checks if a Zombie has been killed, and performs checks to see whether the game has ended, and which side
      * has won.
+     *
      * @param zombie The Zombie to check
      */
     private void checkAlive(Zombie zombie) {
-        if(zombie.getHealth() <=0){
+        if (zombie.getHealth() <= 0) {
             String zombieToRemove = "-1";
-            for(String i : zombies.keySet()) {
+            for (String i : zombies.keySet()) {
                 if (zombies.get(i) == zombie) {
                     zombieToRemove = i;
                     break;
                 }
             }
-            if(!zombieToRemove.equals("-1")) {
+            if (!zombieToRemove.equals("-1")) {
                 zombies.remove(zombieToRemove);
             }
             int j;
             boolean allZombiesDead = false;
-            if(zombie.getIsPlayerControlled()){
-                for(j = 0; j < clientTeam.size(); j++){
-                    if(clientTeam.get(j) == zombie.getUserData()){
+            if (zombie.getIsPlayerControlled()) {
+                for (j = 0; j < clientTeam.size(); j++) {
+                    if (clientTeam.get(j) == zombie.getUserData()) {
                         clientTeam.remove(j);
                     }
                 }
-                if(clientTeam.size() == 0){
+                if (clientTeam.size() == 0) {
                     System.out.println("Opponent wins");
                     gameIsOver = true;
                     allZombiesDead = true;
                 }
-            }
-            else{
-                for(j = 0; j < enemyTeam.size(); j++){
-                    if(enemyTeam.get(j) == zombie.getUserData()){
+            } else {
+                for (j = 0; j < enemyTeam.size(); j++) {
+                    if (enemyTeam.get(j) == zombie.getUserData()) {
                         enemyTeam.remove(j);
                     }
                 }
-                if(enemyTeam.size() == 0){
+                if (enemyTeam.size() == 0) {
                     System.out.println("Player wins");
                     gameIsOver = true;
                     allZombiesDead = true;
                 }
             }
             System.out.println(zombie.getUserData() + " died!");
-            if(!allZombiesDead) {
+            if (!allZombiesDead) {
                 if (zombie.getUserData() == currentPlayer) {
                     switchPlayer();
                 }
@@ -644,8 +657,8 @@ public class ClientGame extends RenderWorld implements GameType{
     /**
      * Checks if the player has ran out of energy, if so then we switch player
      */
-    private void checkEnergy(){
-        if(energy <= 0){
+    private void checkEnergy() {
+        if (energy <= 0) {
             System.out.println("Next player's turn");
             energy = 100;
             clientTurn = !clientTurn;
@@ -660,8 +673,7 @@ public class ClientGame extends RenderWorld implements GameType{
         try {
             zombies.get(Integer.toString(currentPlayer)).noMovement();
             zombies.get(Integer.toString(currentPlayer)).removeAim();     //removes aim line from current player
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //do nothing
         }
         energy = maxEnergy;
@@ -674,7 +686,7 @@ public class ClientGame extends RenderWorld implements GameType{
         }
         previousTime = System.nanoTime();
 
-        if(zombies.get(Integer.toString(currentPlayer)) == null) {
+        if (zombies.get(Integer.toString(currentPlayer)) == null) {
             switchPlayer();
         } else {
             previousTime = System.nanoTime();
@@ -686,126 +698,103 @@ public class ClientGame extends RenderWorld implements GameType{
     /**
      * A contact listener for contact between objects
      */
-    class MyContactListener implements ContactListener {
+    private class MyContactListener implements ContactListener {
 
+        @Override
+        public void beginContact(Contact contact) {
 
-            @Override
-            public void beginContact(Contact contact) {
+            Object fixtureUserData = contact.getFixtureA().getUserData();
+            Object fixtureUserData2 = contact.getFixtureB().getUserData();
 
-                //System.out.println("contact");
-                Object fixtureUserData = contact.getFixtureA().getUserData();
-                Object fixtureUserData2 = contact.getFixtureB().getUserData();
+            if (((int) fixtureUserData == zombies.get(Integer.toString(currentPlayer)).getUserData() && (int) fixtureUserData2 == 1) || (int)
+                    fixtureUserData == 1 && (int) fixtureUserData2 == zombies.get(Integer.toString(currentPlayer)).getUserData()) {
+                zombies.get(String.valueOf(currentPlayer)).setFootContacts(1);
+            } else if ((zombies.containsKey(Integer.toString((int) fixtureUserData)) && crates.containsKey((int) fixtureUserData2))) {
+                Crate crate = crates.get((int) fixtureUserData2);
+                Zombie zombie = zombies.get(Integer.toString((int) fixtureUserData));
 
-                System.out.println("contact: " + fixtureUserData + " " + fixtureUserData2);
-                System.out.println(zombies.get(Integer.toString(currentPlayer)).getUserData());
-
-                if(((int) fixtureUserData == zombies.get(Integer.toString(currentPlayer)).getUserData() && (int) fixtureUserData2 == 1) || (int)
-                        fixtureUserData == 1 && (int)fixtureUserData2 == zombies.get(Integer.toString(currentPlayer)).getUserData()){
-                    //footContacts.put(currentPlayer, footContacts.get(currentPlayer) + 1);
-                    zombies.get(String.valueOf(currentPlayer)).setFootContacts(1);
-                } else if ((zombies.containsKey(Integer.toString((int)fixtureUserData)) && crates.containsKey((int)fixtureUserData2))) {
-                    System.out.println("DELETE THE CRATE " + (int)fixtureUserData);
-                    Crate crate = crates.get((int)fixtureUserData2);
-                    Zombie zombie = zombies.get(Integer.toString((int)fixtureUserData));
-
-                    if(crate.getType().equals("HEALTH")) {
-                        zombie.pickupHealth();
-                    } else {
-                        zombie.pickupGrenades();
-                    }
-                    crates.remove((int)fixtureUserData2);
-                    usedCrates.add(crate);
-                } else if ((zombies.containsKey(Integer.toString((int)fixtureUserData2)) && crates.containsKey((int)fixtureUserData))) {
-                    System.out.println("DELETE THE CRATE " + (int) fixtureUserData);
-                    Crate crate = crates.get((int) fixtureUserData);
-                    Zombie zombie = zombies.get(Integer.toString((int) fixtureUserData2));
-
-                    if (crate.getType().equals("HEALTH")) {
-                        zombie.pickupHealth();
-                    } else {
-                        zombie.pickupGrenades();
-                    }
-                    crates.remove((int) fixtureUserData);
-                    usedCrates.add(crate);
+                if (crate.getType().equals("HEALTH")) {
+                    zombie.pickupHealth();
+                } else {
+                    zombie.pickupGrenades();
                 }
+                crates.remove((int) fixtureUserData2);
+                usedCrates.add(crate);
+            } else if ((zombies.containsKey(Integer.toString((int) fixtureUserData2)) && crates.containsKey((int) fixtureUserData))) {
+                Crate crate = crates.get((int) fixtureUserData);
+                Zombie zombie = zombies.get(Integer.toString((int) fixtureUserData2));
 
-                if((int) fixtureUserData2 == 50) {
-                    Body body= contact.getFixtureB().getBody();
-                    for (Zombie player : new ArrayList<>(zombies.values())) {
-                        for (Bullet bullet : player.getBullets()) {
-                            if (bullet.getBody() == body) {
-                                bullet.setRemove(true);
-                                for (Zombie victim : new ArrayList<>(zombies.values())) {
-                                    if (victim.getUserData() == (int) fixtureUserData) {
-                                        if (((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {
-                                            System.out.println("fixture 2 friendly fire" + victim.getUserData());
-                                        } else {
-                                            victim.getHit(30);
-                                            System.out.println(victim.getUserData() + "'s Health: " + victim.getHealth());
-                                            System.out.println("hit " + victim.getUserData());
-                                            checkAlive(victim);
+                if (crate.getType().equals("HEALTH")) {
+                    zombie.pickupHealth();
+                } else {
+                    zombie.pickupGrenades();
+                }
+                crates.remove((int) fixtureUserData);
+                usedCrates.add(crate);
+            }
 
-
-                                        }
+            if ((int) fixtureUserData2 == 50) {
+                Body body = contact.getFixtureB().getBody();
+                for (Zombie player : new ArrayList<>(zombies.values())) {
+                    for (Bullet bullet : player.getBullets()) {
+                        if (bullet.getBody() == body) {
+                            bullet.setRemove(true);
+                            for (Zombie victim : new ArrayList<>(zombies.values())) {
+                                if (victim.getUserData() == (int) fixtureUserData) {
+                                    if (!((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {
+                                        victim.getHit(30);
+                                        checkAlive(victim);
                                     }
-
                                 }
+
                             }
                         }
                     }
-                } else if((int) fixtureUserData == 50) {
-                    Body body = contact.getFixtureA().getBody();
-                    for (Zombie player : new ArrayList<>(zombies.values())) {
-                        for (Bullet bullet : player.getBullets()) {
-                            if (bullet.getBody() == body) {
-                                bullet.setRemove(true);
-                                for (Zombie victim : new ArrayList<>(zombies.values())) {
-                                    if (victim.getUserData() == (int) fixtureUserData2) {
-                                        if (((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {
-                                            System.out.println("friendly fire" + victim.getUserData());
-                                        } else {
-                                            victim.getHit(30);
-                                            System.out.println(victim.getUserData() + "'s Health: " + victim.getHealth());
-                                            System.out.println("hit " + victim.getUserData());
-                                            checkAlive(victim);
-
-
-                                        }
+                }
+            } else if ((int) fixtureUserData == 50) {
+                Body body = contact.getFixtureA().getBody();
+                for (Zombie player : new ArrayList<>(zombies.values())) {
+                    for (Bullet bullet : player.getBullets()) {
+                        if (bullet.getBody() == body) {
+                            bullet.setRemove(true);
+                            for (Zombie victim : new ArrayList<>(zombies.values())) {
+                                if (victim.getUserData() == (int) fixtureUserData2) {
+                                    if (!((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {
+                                        victim.getHit(30);
+                                        checkAlive(victim);
                                     }
-
                                 }
+
                             }
                         }
                     }
                 }
             }
+        }
 
-            @Override
-            public void endContact(Contact contact) {
+        @Override
+        public void endContact(Contact contact) {
 
-                Object fixtureUserData =  contact.getFixtureA().getUserData();
-                Object fixtureUserData2 = contact.getFixtureB().getUserData();
+            Object fixtureUserData = contact.getFixtureA().getUserData();
+            Object fixtureUserData2 = contact.getFixtureB().getUserData();
 
-                //System.out.println((int)fixtureUserData);
-                if(zombies.get(Integer.toString(currentPlayer)) != null) {
-
-                    if (((int) fixtureUserData == zombies.get(Integer.toString(currentPlayer)).getUserData() && (int) fixtureUserData2 == 1) || (int)
-                            fixtureUserData == 1 && (int) fixtureUserData2 == zombies.get(Integer.toString(currentPlayer)).getUserData()) {
-                        //footContacts.put(currentPlayer, footContacts.get(currentPlayer) - 1);
-                        zombies.get(String.valueOf(currentPlayer)).setFootContacts(-1);
-                    }
+            if (zombies.get(Integer.toString(currentPlayer)) != null) {
+                if (((int) fixtureUserData == zombies.get(Integer.toString(currentPlayer)).getUserData() && (int) fixtureUserData2 == 1) || (int)
+                        fixtureUserData == 1 && (int) fixtureUserData2 == zombies.get(Integer.toString(currentPlayer)).getUserData()) {
+                    zombies.get(String.valueOf(currentPlayer)).setFootContacts(-1);
                 }
             }
+        }
 
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {
 
-            }
+        }
 
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {
 
-            }
+        }
     }
 
     @Override
