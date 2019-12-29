@@ -11,9 +11,6 @@ import static org.junit.Assert.*;
 
 public class TestLobby {
 
-    //private static Player player = new Player("x", "1");
-    // private static Lobby lobby = new Lobby("x", player, "x", "y");
-
     @Test
     public void publicConstructorTest() {
         try {
