@@ -16,11 +16,6 @@ import static org.junit.Assert.*;
 @PrepareForTest(com.elite.audio.AudioAccessor.class)
 public class TestAudioAccessor {
 
-    // private static AudioAccessor audioAccessor = new AudioAccessor();
-    private static String music = "testMusic";
-    private static String music1 = "testMusic";
-    private static String sound = "testSound";
-
     @Test
     public void startMusicTest() {
         try{
