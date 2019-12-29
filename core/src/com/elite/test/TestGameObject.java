@@ -7,12 +7,14 @@ import static org.junit.Assert.assertEquals;
 
 public class TestGameObject {
 
-    private static GameObject gameObject = new GameObject("x", 0, 0, "1");
-
     @Test
     public void ConstructorTest() {
         try {
-            GameObject gameObjectTest = new GameObject("x", 0, 0, "1");
+            GameObject gameObject= new GameObject("x", 0, 0, "1");
+            assertEquals("x", gameObject.getName());
+            assertEquals(0, gameObject.getX(), 0.0);
+            assertEquals(0, gameObject.getY(), 0.0);
+            assertEquals("1", gameObject.getCommand());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -20,51 +22,54 @@ public class TestGameObject {
 
     @Test
     public void getNameTest() {
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
         assertEquals("x", gameObject.getName());
     }
 
     @Test
     public void getXTest() {
-        assertEquals(0, gameObject.getX());
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
+        assertEquals(0, gameObject.getX(), 0.0);
     }
 
     @Test
     public void setXTest() {
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
         try {
             gameObject.setX(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertEquals(1, gameObject.getX());
+        assertEquals(1, gameObject.getX(), 0.0);
     }
 
     @Test
     public void getYTest() {
-        assertEquals(0, gameObject.getY());
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
+        assertEquals(0, gameObject.getY(), 0.0);
     }
 
     @Test
     public void setYTest() {
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
         try {
             gameObject.setY(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertEquals(1, gameObject.getY());
+        assertEquals(1, gameObject.getY(), 0.0);
     }
 
     @Test
     public void getCommandTest() {
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
         assertEquals("1", gameObject.getCommand());
     }
 
     @Test
     public void setCommandTest() {
-        try {
-            //gameObject.setY("2");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GameObject gameObject = new GameObject("x", 0, 0, "1");
+        gameObject.setCommand("2");
         assertEquals("2", gameObject.getCommand());
     }
 }

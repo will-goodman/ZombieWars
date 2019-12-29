@@ -7,29 +7,26 @@ import static org.junit.Assert.assertEquals;
 
 public class TestPlayer {
 
-    private static Player player = new Player("x", "1");
-
     @Test
     public void ConstructorTest() {
-        try {
-            Player playerTest = new Player("x", "1");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        Player testPlayer = new Player("x", "1");
+
+        assertEquals(testPlayer.getName(), "x");
     }
 
     @Test
     public void getNameTest() {
-        assertEquals("x", player.getName());
+        Player testPlayer = new Player("x", "1");
+
+        assertEquals(testPlayer.getName(), "x");
     }
 
     @Test
     public void setNameTest() {
-        try {
-            player.setName("y");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertEquals("y", player.getName());
+        Player testPlayer = new Player("x", "1");
+
+        testPlayer.setName("y");
+
+        assertEquals(testPlayer.getName(), "y");
     }
 }
