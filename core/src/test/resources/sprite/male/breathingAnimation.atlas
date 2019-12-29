@@ -1,0 +1,116 @@
+breathingAnimation-0.png
+size: 1720, 1557
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Idle (1)
+  rotate: false
+  xy: 0, 0
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (2)
+  rotate: false
+  xy: 430, 0
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (3)
+  rotate: false
+  xy: 860, 0
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (4)
+  rotate: false
+  xy: 1290, 0
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (5)
+  rotate: false
+  xy: 0, 519
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (6)
+  rotate: false
+  xy: 430, 519
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (7)
+  rotate: false
+  xy: 860, 519
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (8)
+  rotate: false
+  xy: 1290, 519
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (9)
+  rotate: false
+  xy: 0, 1038
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (10)
+  rotate: false
+  xy: 430, 1038
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (11)
+  rotate: false
+  xy: 860, 1038
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (12)
+  rotate: false
+  xy: 1290, 1038
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+
+breathingAnimation-1.png
+size: 430, 1557
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Idle (13)
+  rotate: false
+  xy: 0, 0
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (14)
+  rotate: false
+  xy: 0, 519
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
+Idle (15)
+  rotate: false
+  xy: 0, 1038
+  size: 430, 519
+  orig: 430, 519
+  offset: 0, 0
+  index: -1
