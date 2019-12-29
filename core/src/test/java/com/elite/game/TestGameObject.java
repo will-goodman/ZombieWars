@@ -1,6 +1,5 @@
 package com.elite.game;
 
-import com.elite.game.GameObject;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,12 +9,12 @@ public class TestGameObject {
     @Test
     public void ConstructorTest() {
         try {
-            GameObject gameObject= new GameObject("x", 0, 0, "1");
+            GameObject gameObject = new GameObject("x", 0, 0, "1");
             assertEquals("x", gameObject.getName());
             assertEquals(0, gameObject.getX(), 0.0);
             assertEquals(0, gameObject.getY(), 0.0);
             assertEquals("1", gameObject.getCommand());
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

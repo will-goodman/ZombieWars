@@ -1,7 +1,5 @@
 package com.elite.audio;
 
-import com.elite.audio.AudioAccessor;
-import com.elite.audio.AudioManagement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,7 +16,7 @@ public class TestAudioAccessor {
 
     @Test
     public void startMusicTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -27,14 +25,14 @@ public class TestAudioAccessor {
 
             testAudioAccessor.startMusic("test_music");
             Mockito.verify(mockAudioManagement, Mockito.times(1)).startMusic("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void playSoundTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -42,7 +40,7 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
             testAudioAccessor.playSound("test_music");
             Mockito.verify(mockAudioManagement, Mockito.times(1)).playSound("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -57,7 +55,7 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
             testAudioAccessor.changeMusicVolume(11, "test_music");
             Mockito.verify(mockAudioManagement, Mockito.times(1)).changeMusicVolume(11, "test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -72,7 +70,7 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
             testAudioAccessor.setMusicVolume(11);
             Mockito.verify(mockAudioManagement, Mockito.times(1)).setMusicVolume(11);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -87,14 +85,14 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
             testAudioAccessor.setSoundVolume(11);
             Mockito.verify(mockAudioManagement, Mockito.times(1)).setSoundVolume(11);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void allowSoundSwitchTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -102,14 +100,14 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
             testAudioAccessor.allowSoundsSwitch();
             Mockito.verify(mockAudioManagement, Mockito.times(1)).allowSoundsSwitch();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void getMusicVolumeTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -117,14 +115,14 @@ public class TestAudioAccessor {
 
             AudioAccessor testAudioAccessor = new AudioAccessor();
             assertEquals(testAudioAccessor.getMusicVolume("test_music"), 11f, 0.0);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void switchMusicTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -133,14 +131,14 @@ public class TestAudioAccessor {
 
             testAudioAccessor.switchMusic("test_music");
             Mockito.verify(mockAudioManagement, Mockito.times(1)).switchMusic("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void pauseMusicTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -149,14 +147,14 @@ public class TestAudioAccessor {
 
             testAudioAccessor.pauseMusic("test_music");
             Mockito.verify(mockAudioManagement, Mockito.times(1)).pauseMusic("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void isMusicPlayingTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -165,14 +163,14 @@ public class TestAudioAccessor {
             AudioAccessor testAudioAccessor = new AudioAccessor();
 
             assertTrue(testAudioAccessor.isMusicPlaying("test_music"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void allowMusicSwitchTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
             Whitebox.setInternalState(AudioAccessor.class, mockAudioManagement);
@@ -181,7 +179,7 @@ public class TestAudioAccessor {
 
             testAudioAccessor.allowMusicSwitch();
             Mockito.verify(mockAudioManagement, Mockito.times(1)).allowMusicSwitch();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

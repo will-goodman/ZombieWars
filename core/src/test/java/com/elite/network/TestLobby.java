@@ -1,8 +1,7 @@
 package com.elite.network;
 
 import com.elite.game.NetworkGame;
-import com.elite.network.Lobby;
-import com.elite.network.Player;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class TestLobby {
             assertEquals(testLobby.getName(), "x");
             assertEquals(testLobby.getPlayers(), expectedPlayers);
             assertFalse(testLobby.getPrivacy());
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -40,7 +39,7 @@ public class TestLobby {
             assertTrue(testLobby.getPrivacy());
             assertEquals(testLobby.getSalt(), "y");
             assertTrue(testLobby.verifyPassword("x"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

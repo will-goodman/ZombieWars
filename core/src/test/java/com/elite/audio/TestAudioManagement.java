@@ -1,18 +1,13 @@
 package com.elite.audio;
 
-import com.elite.audio.AudioManagement;
-
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.FieldSetter;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.junit.Test;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(AudioManagement.class)
@@ -20,12 +15,12 @@ public class TestAudioManagement {
 
     @Test
     public void constructorTest() {
-        try{
+        try {
             AudioManagement mockAudioManagement = Mockito.mock(AudioManagement.class);
             PowerMockito.whenNew(AudioManagement.class).withNoArguments().thenReturn(mockAudioManagement);
 
             assertEquals(new AudioManagement(), mockAudioManagement);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -41,7 +36,7 @@ public class TestAudioManagement {
 
             assertFalse(testAudioManagement.allowMusicSwitch());
             assertTrue(testAudioManagement.allowMusicSwitch());
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -59,7 +54,7 @@ public class TestAudioManagement {
             assertFalse(firstResult);
             boolean secondResult = testAudioManagement.allowSoundsSwitch();
             assertTrue(secondResult);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -87,7 +82,7 @@ public class TestAudioManagement {
 
             Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(true);
             testAudioManagement.changeMusicVolume(0.5f, "test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -107,7 +102,7 @@ public class TestAudioManagement {
 
             AudioManagement testAudioManagement = new AudioManagement();
             assertEquals(0.0f, testAudioManagement.getMusicVolume("fake_music"), 0.0);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -131,7 +126,7 @@ public class TestAudioManagement {
             testAudioManagement.switchMusic("test_music");
             Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(false);
             testAudioManagement.switchMusic("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -149,7 +144,7 @@ public class TestAudioManagement {
             testAudioManagement.pauseMusic("test_music");
             Mockito.when(testAudioManagement.isMusicPlaying("test_music")).thenReturn(false);
             testAudioManagement.pauseMusic("test_music");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -169,7 +164,7 @@ public class TestAudioManagement {
             AudioManagement testAudioManagement = new AudioManagement();
 
             assertFalse(testAudioManagement.isMusicPlaying("test_music"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

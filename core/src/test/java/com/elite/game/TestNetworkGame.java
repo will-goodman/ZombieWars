@@ -1,7 +1,5 @@
 package com.elite.game;
 
-import com.elite.game.GameObject;
-import com.elite.game.NetworkGame;
 import org.junit.Test;
 import org.mockito.Mockito;
 
