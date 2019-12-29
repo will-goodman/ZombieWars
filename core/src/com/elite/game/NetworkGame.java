@@ -46,6 +46,7 @@ public class NetworkGame implements Serializable {
         object.setCommand(command);
         object.setX(x);
         object.setY(y);
+        objects.put(key, object);
     }
 
     /**
