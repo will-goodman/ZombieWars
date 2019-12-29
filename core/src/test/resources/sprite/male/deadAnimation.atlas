@@ -1,0 +1,89 @@
+deadAnimation.png
+size: 970, 1924
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Dead (1)
+  rotate: true
+  xy: 499, 794
+  size: 382, 424
+  orig: 629, 526
+  offset: 0, 60
+  index: -1
+Dead (2)
+  rotate: true
+  xy: 499, 1
+  size: 409, 458
+  orig: 629, 526
+  offset: 19, 36
+  index: -1
+Dead (3)
+  rotate: true
+  xy: 499, 412
+  size: 380, 431
+  orig: 629, 526
+  offset: 65, 61
+  index: -1
+Dead (4)
+  rotate: false
+  xy: 1, 1484
+  size: 346, 386
+  orig: 629, 526
+  offset: 63, 69
+  index: -1
+Dead (5)
+  rotate: false
+  xy: 349, 1484
+  size: 294, 377
+  orig: 629, 526
+  offset: 90, 57
+  index: -1
+Dead (6)
+  rotate: false
+  xy: 645, 1549
+  size: 312, 374
+  orig: 629, 526
+  offset: 88, 58
+  index: -1
+Dead (7)
+  rotate: false
+  xy: 645, 1178
+  size: 324, 369
+  orig: 629, 526
+  offset: 89, 59
+  index: -1
+Dead (8)
+  rotate: false
+  xy: 1, 1123
+  size: 421, 359
+  orig: 629, 526
+  offset: 91, 52
+  index: -1
+Dead (9)
+  rotate: false
+  xy: 1, 836
+  size: 492, 285
+  orig: 629, 526
+  offset: 95, 54
+  index: -1
+Dead (10)
+  rotate: false
+  xy: 1, 1
+  size: 496, 278
+  orig: 629, 526
+  offset: 94, 56
+  index: -1
+Dead (11)
+  rotate: false
+  xy: 1, 559
+  size: 496, 275
+  orig: 629, 526
+  offset: 95, 53
+  index: -1
+Dead (12)
+  rotate: false
+  xy: 1, 281
+  size: 496, 276
+  orig: 629, 526
+  offset: 95, 52
+  index: -1
