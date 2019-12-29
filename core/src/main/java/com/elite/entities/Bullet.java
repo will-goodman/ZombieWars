@@ -7,11 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
+ * Bullet entity fired by Zombies.
+ *
  * @author Jacob Wheale
  */
 public class Bullet {
 
     private static Texture texture;
+    private static World world;
     private static final int WIDTH = 30;
     private static final int HEIGHT = 15;
 
@@ -19,10 +22,9 @@ public class Bullet {
     private boolean remove = false;
     private boolean left;
     private Body body;
-    private static World world;
     private Zombie owner;
 
-    float rotation = 0.0f; //rotation matrix of the bullet
+    float rotation; //rotation matrix of the bullet
 
     /**
      * Getter method for variable 'body'.
@@ -32,6 +34,8 @@ public class Bullet {
     public Body getBody() {
         return this.body;
     }
+
+    //TODO Look at removing method
 
     /**
      * Getter method for variable 'owner'
@@ -72,7 +76,7 @@ public class Bullet {
      * @param thita            The rotation of the bullet.
      */
     public Bullet(World world, Zombie owner, float x, float y, boolean left, float vy, boolean playerControlled, float thita) {
-        this.world = world;
+        Bullet.world = world;
         this.owner = owner;
         this.x = x;
         this.y = y;
@@ -86,7 +90,6 @@ public class Bullet {
 
         if (!playerControlled)
             rotation = 0;
-        //vy = 0f;
 
         createBody(vy);
     }
