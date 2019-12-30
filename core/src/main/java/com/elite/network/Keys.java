@@ -1,9 +1,9 @@
 package com.elite.network;
 
-/*
-@author Minhal Khan
-*/
 
+/**
+ * @author Minhal Khan
+ */
 public class Keys {
 
     /*

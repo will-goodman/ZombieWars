@@ -140,9 +140,9 @@ public class LobbyCreation implements Screen {
                 dispose();
 
                 if(privateChkBox.isChecked()) {
-                    CLIENT.hostLobby(lobbyName, hostName, "multi-player", passwordTxt.getText());
+                    CLIENT.hostLobby(lobbyName, hostName, passwordTxt.getText());
                 } else {
-                    CLIENT.hostLobby(lobbyName, hostName, "multi-player");
+                    CLIENT.hostLobby(lobbyName, hostName);
                 }
 
                 CLIENT.start();
