@@ -1,80 +1,59 @@
 package com.elite.world;
 
-
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.elite.audio.AudioAccessor;
 import com.elite.entities.*;
 import com.elite.game.GameType;
 import com.elite.ui.EnergyBar;
-
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Random;
 
-
 /**
+ * Renders sprites on a single-player game.
+ *
  * @author Jacob Wheale
  * @author Katie Potts
  * @author Minhal Khan
  */
 public class SpriteRenderer extends RenderWorld implements GameType {
-	private SpriteRenderer spriteRenderer;
-	private Game game;
-
-    /*Character attributes*/
-    private static World world;
-    private ContactListener myContactListener;
-
-    private EnergyBar energyBar = new EnergyBar();
-    private static double energy = 100;
-
-    private final long turnTime = 60000000000L;
-    private final long aiShotWait = 1000000000L;
-    private static final double maxEnergy = 100;
 
     private final float TIME_STEP = 1.0f / 60.0f;
+    private final long TURN_TIME = 60000000000L;
+    private final long AI_SHOT_WAIT = 1000000000L;
 
-    private static long previousTime = System.nanoTime();
-    private long currentTime = System.nanoTime();
-    private static int currentPlayer = 0;
-
-    private static boolean allowMove = true;
-
-    private String showString;
-
-    private static ArrayList<Zombie> team1 = new ArrayList<>();
-    private static ArrayList<Zombie> team2 = new ArrayList<>();
-    private Hashtable<Integer, Crate> crates = new Hashtable<>();
-
-
-    private BitmapFont timeText = new BitmapFont();
-    private DecimalFormat value = new DecimalFormat("#.#");
-    private Vector3 mouse_position = new Vector3(0, 0, 0);
-
-
-    private static ArrayList<Zombie> players;
-    private static ArrayList<Zombie> deadPlayers;
-    private static ArrayList<Crate> usedCrates;
-
-    private boolean gameIsOver = false;
-    private static boolean letsGoAI = false;
-    private int targettedPlayer = 0;
     private static boolean targetFound = false;
     private static int closestDistance = 1000000000;
     private static boolean aiMoved = false;
+    private static boolean letsGoAI = false;
+    private static ArrayList<Zombie> team1 = new ArrayList<>();
+    private static ArrayList<Zombie> team2 = new ArrayList<>();
+    private static ArrayList<Zombie> players;
+    private static ArrayList<Zombie> deadPlayers;
+    private static ArrayList<Crate> usedCrates;
+    private static World world;
+    private static double energy = 100;
+    private static long previousTime = System.nanoTime();
+    private static int currentPlayer = 0;
+    private static boolean allowMove = true;
+    private static final double MAX_ENERGY = 100;
+
+    private EnergyBar energyBar = new EnergyBar();
+    private Hashtable<Integer, Crate> crates = new Hashtable<>();
+    private BitmapFont timeText = new BitmapFont();
+    private DecimalFormat value = new DecimalFormat("#.#");
+    private Vector3 mouse_position = new Vector3(0, 0, 0);
+    private boolean gameIsOver = false;
+    private int targetedPlayer = 0;
     private long lastShotTime;
     private long startWalkTime;
-
     private boolean endMusicPlayed = false;
 
     /**
@@ -85,12 +64,11 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         players = new ArrayList<>();
         deadPlayers = new ArrayList<>();
         usedCrates = new ArrayList<>();
-        myContactListener = new MyContactListener();
+        ContactListener myContactListener = new MyContactListener();
 
         // Create physics world simulation with gravity value
         world = new World(new Vector2(0, -200f), true);
         world.setContactListener(myContactListener);
-
 
         for (int i = 0, j = 5; j < 8; j++, i++) {
             team1.add(new Zombie(world, 775f + 50 * i, 700f, this, j, true));
@@ -120,7 +98,6 @@ public class SpriteRenderer extends RenderWorld implements GameType {
     @Override
     public void show() {
         super.show(); //renders world
-
 
         // These blocks of code are creating the wall and floor bodies in the world.
 
@@ -219,7 +196,6 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         Fixture groundFixture7 = groundBody7.createFixture(groundFixtureDef1);
         groundFixture7.setUserData(1);
 
-
         // free up memory
         groundBox1.dispose();
         groundBox2.dispose();
@@ -247,9 +223,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
 
         mouse_position.set(Gdx.input.getX(), Gdx.input.getY(), 0); //fetch mouse position from frame
 
-        currentTime = System.nanoTime();
-        if (currentTime - previousTime >= turnTime) {
-            //System.out.println("player change");
+        long currentTime = System.nanoTime();
+        if (currentTime - previousTime >= TURN_TIME) {
             switchPlayer();
         }
 
@@ -257,6 +232,7 @@ public class SpriteRenderer extends RenderWorld implements GameType {
 
         this.energyBar.renderEnergy(energy, super.spriteBatch); //draw energy bar
 
+        String showString;
         if (gameIsOver) {
             allowMove = false;
             if (team1.isEmpty()) {
@@ -281,8 +257,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         timeText.draw(super.spriteBatch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
         super.spriteBatch.end();
 
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).updatePlayer();
+        for (Zombie player : players) {
+            player.updatePlayer();
         }
 
         for (int key : crates.keySet()) {
@@ -329,14 +305,13 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                     if (players.get(i).getIsPlayerControlled()) {
                         if (Math.abs(players.get(currentPlayer).getX() - players.get(i).getX()) < closestDistance && Math.abs(players.get(currentPlayer).getY() - players.get(i).getY()) < 10) {
                             closestDistance = (int) Math.abs(players.get(currentPlayer).getX() - players.get(i).getX());
-                            targettedPlayer = i;
+                            targetedPlayer = i;
                             targetFound = true;
                         }
                     }
                 }
                 if (targetFound) {
-                    //System.out.println("AI method 1");
-                    if (players.get(targettedPlayer).getX() > players.get(currentPlayer).getX()) {
+                    if (players.get(targetedPlayer).getX() > players.get(currentPlayer).getX()) {
                         if (!aiMoved) {
                             players.get(currentPlayer).moveRight();
                             aiMoved = true;
@@ -349,29 +324,26 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                             reduceEnergy(EnergyCost.getWalkCost());
                         }
                     }
-                    if (System.nanoTime() - lastShotTime >= aiShotWait) {
+                    if (System.nanoTime() - lastShotTime >= AI_SHOT_WAIT) {
                         players.get(currentPlayer).shoot();
-                        //System.out.println(players.get(currentPlayer).getUserData());
                         lastShotTime = System.nanoTime();
                     }
                     players.get(currentPlayer).noMovement();
                 } else {
-                    for (int i = 0; i < players.size(); i++) {
-                        if (Math.abs(players.get(currentPlayer).getY()) > Math.abs(players.get(i).getY()) && players.get(i).getIsPlayerControlled()) {
+                    for (Zombie player : players) {
+                        if (Math.abs(players.get(currentPlayer).getY()) > Math.abs(player.getY()) && player.getIsPlayerControlled()) {
                             letsGoAI = true;
                             startWalkTime = System.nanoTime();
                         }
 
                     }
                     if (letsGoAI) {
-                        //System.out.println("AI method 2");
                         if (players.get(currentPlayer).getX() < 1215 - players.get(currentPlayer).getX()) {
                             players.get(currentPlayer).moveRight();
-                            reduceEnergy(EnergyCost.getWalkCost());
                         } else {
                             players.get(currentPlayer).moveLeft();
-                            reduceEnergy(EnergyCost.getWalkCost());
                         }
+                        reduceEnergy(EnergyCost.getWalkCost());
 
                         if (System.nanoTime() - startWalkTime >= 200000000L) {
                             players.get(currentPlayer).noMovement();
@@ -393,9 +365,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                                 reduceEnergy(EnergyCost.getWalkCost());
                             }
                         }
-                        if (System.nanoTime() - (lastShotTime + 10000000000L) >= aiShotWait) {
+                        if (System.nanoTime() - (lastShotTime + 10000000000L) >= AI_SHOT_WAIT) {
                             players.get(currentPlayer).throwGrenade();
-                            System.out.println(players.get(currentPlayer).getUserData());
                             lastShotTime = System.nanoTime();
                             reduceEnergy(EnergyCost.getGrenadeCost());
                         }
@@ -418,15 +389,15 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         world.step(TIME_STEP, 6, 2);
 
         if (usedCrates.size() > 0) {
-            for (int i = 0; i < usedCrates.size(); i++) {
-                world.destroyBody(usedCrates.get(i).getBody());
+            for (Crate usedCrate : usedCrates) {
+                world.destroyBody(usedCrate.getBody());
             }
             usedCrates.clear();
         }
 
         if (deadPlayers.size() > 0) {
-            for (int i = 0; i < deadPlayers.size(); i++) {
-                world.destroyBody(deadPlayers.get(i).getBody());
+            for (Zombie deadPlayer : deadPlayers) {
+                world.destroyBody(deadPlayer.getBody());
             }
             deadPlayers.clear();
         }
@@ -455,7 +426,7 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         } catch (Exception e) {
             //do nothing
         }
-        energy = maxEnergy;
+        energy = MAX_ENERGY;
         if (currentPlayer == players.size() - 1) {
             currentPlayer = 0;
         } else {
@@ -483,15 +454,13 @@ public class SpriteRenderer extends RenderWorld implements GameType {
      */
     public void checkGrenade(Zombie grenadeThrower, float x, float y) {
 
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i) != grenadeThrower) {
-                Zombie zombie = players.get(i);
+        for (Zombie player : players) {
+            if (player != grenadeThrower) {
 
-                if ((zombie.getPlayerX() < x + 100 && zombie.getPlayerX() > x - 100) && (zombie.getPlayerY() < y + 100 && zombie.getPlayerY() > y - 100)) {
-                    if ((team1.contains(zombie) && team2.contains(grenadeThrower)) || (team2.contains(zombie) && team1.contains(grenadeThrower))) {
-                        zombie.getHit(35);
-                        System.out.println("Grenade hit");
-                        checkAlive(zombie);
+                if ((player.getPlayerX() < x + 100 && player.getPlayerX() > x - 100) && (player.getPlayerY() < y + 100 && player.getPlayerY() > y - 100)) {
+                    if ((team1.contains(player) && team2.contains(grenadeThrower)) || (team2.contains(player) && team1.contains(grenadeThrower))) {
+                        player.getHit(35);
+                        checkAlive(player);
                     }
 
                 }
@@ -515,54 +484,36 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                     targetFound = false;
                 }
             }
-            int j;
-
             if (zombie.getIsPlayerControlled()) {
-                for (j = 0; j < team1.size(); j++) {
+                for (int j = 0; j < team1.size(); j++) {
                     if (team1.get(j) == zombie) {
                         team1.remove(j);
                     }
                 }
                 if (team1.size() == 0) {
-                    System.out.println("AI wins");
                     allowMove = false;
-                    showGameOver("AI");
-                    
-
+                    showGameOver();
                 }
-
-
             } else {
-                for (j = 0; j < team2.size(); j++) {
+                for (int j = 0; j < team2.size(); j++) {
                     if (team2.get(j) == zombie) {
 
                         team2.remove(j);
                     }
                 }
                 if (team2.size() == 0) {
-                    System.out.println("Player wins");
                     allowMove = false;
-                    showGameOver("Player");
-                   
-                    
-                    
-                   
-                    
-
-
+                    showGameOver();
                 }
             }
-            System.out.println(zombie.getUserData() + " died!");
         }
     }
-  
+
 
     /**
      * Method for when the game is over.
-     *
-     * @param winner Who won the game.
      */
-    private void showGameOver(String winner) {
+    private void showGameOver() {
         gameIsOver = true;
     }
 
@@ -615,8 +566,6 @@ public class SpriteRenderer extends RenderWorld implements GameType {
             Object fixtureUserData = contact.getFixtureA().getUserData();
             Object fixtureUserData2 = contact.getFixtureB().getUserData();
 
-            System.out.println("contact: " + fixtureUserData + " " + fixtureUserData2);
-
             for (Zombie player1 : players) {
                 if (((int) fixtureUserData == player1.getUserData() && (int) fixtureUserData2 == 1) || (int)
                         fixtureUserData == 1 && (int) fixtureUserData2 == player1.getUserData()) {
@@ -637,15 +586,9 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                             bullet.setRemove(true);
                             for (Zombie victim : new ArrayList<>(players)) {
                                 if (victim.getUserData() == (int) fixtureUserData || victim.getUserData() == (int) fixtureUserData2) {
-                                    if (((team1.contains(player) && team1.contains(victim)) || team2.contains(player) && team2.contains(victim))) {
-                                        System.out.println("friendly fire");
-                                    } else {
+                                    if (!((team1.contains(player) && team1.contains(victim)) || team2.contains(player) && team2.contains(victim))) {
                                         victim.getHit(30);
-                                        System.out.println(victim.getUserData() + "'s Health: " + victim.getHealth());
-                                        System.out.println("hit " + victim.getUserData());
                                         checkAlive(victim);
-
-
                                     }
                                 }
 
@@ -653,9 +596,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                         }
                     }
                 }
-            } else if (((int) fixtureUserData >= 5 && (int) fixtureUserData <= 10) && crates.containsKey((int) fixtureUserData2)) {
-                System.out.println("DELETE THE CRATE " + (int) fixtureUserData);
-                Crate crate = crates.get((int) fixtureUserData2);
+            } else if (((int) fixtureUserData >= 5 && (int) fixtureUserData <= 10) && crates.containsKey(fixtureUserData2)) {
+                Crate crate = crates.get(fixtureUserData2);
                 Zombie zombie = players.get((int) fixtureUserData - 5);
 
                 if (crate.getType().equals("HEALTH")) {
@@ -663,7 +605,7 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                 } else {
                     zombie.pickupGrenades();
                 }
-                crates.remove((int) fixtureUserData2);
+                crates.remove(fixtureUserData2);
                 usedCrates.add(crate);
             }
 

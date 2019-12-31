@@ -30,25 +30,25 @@ public class MyInputProcessor implements InputProcessor {
         return false;
     }
 
-    /** Called when the screen was touched or a mouse button was pressed.
+    /**
+     * Called when the screen was touched or a mouse button was pressed.
+     *
      * @param screenX The x coordinate, origin is in the upper left corner
      * @param screenY The y coordinate, origin is in the upper left corner
      * @param pointer the pointer for the event.
-     * @param button the button
+     * @param button  the button
      * @return whether the input was processed
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT && (renderer.getClass() == SpriteRenderer.class)){
-            if(renderer.getAllPlayers().get(renderer.getPlayerNow()).getIsPlayerControlled()){
+        if (button == Input.Buttons.LEFT && (renderer.getClass() == SpriteRenderer.class)) {
+            if (renderer.getAllPlayers().get(renderer.getPlayerNow()).getIsPlayerControlled()) {
                 renderer.getAllPlayers().get(renderer.getPlayerNow()).vy = renderer.getAllPlayers().get(renderer.getPlayerNow()).getVelocity();
                 renderer.getAllPlayers().get(renderer.getPlayerNow()).shoot();
             }
             renderer.reduceEnergy(20);
-            return true;
-        } else{
-            return true;
         }
+        return true;
     }
 
     @Override
