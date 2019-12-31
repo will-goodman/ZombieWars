@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.elite.entities.ZombieAttributes;
 
-/*
-@author Minhal Khan
+
+/**
+ * Displays the remaining health of a zombie.
+ *
+ * @author Minhal Khan
  */
-public class HealthBar{
+public class HealthBar {
 
     private static final float WIDTH_SPACING = 25;
     private static final float HEIGHT_SPACING = 17;
@@ -25,58 +28,62 @@ public class HealthBar{
 
     /**
      * Constructor method for the health bar of the zombies
+     *
      * @param x x coordinate of the character
      * @param y y coordinate of the character
      */
     public HealthBar(float x, float y) {
-        updatePosition(x+WIDTH_SPACING,y+ZombieAttributes.ZOMBIE_HEIGHT-HEIGHT_SPACING,100,1); //y up coordinate system hence we add the height for the bar to be on top of the user
-        sprite.setSize(WIDTH,HEIGHT);
+        updatePosition(x + WIDTH_SPACING, y + ZombieAttributes.ZOMBIE_HEIGHT - HEIGHT_SPACING, 100, 1); //y up coordinate system hence we add the height for the bar to be on top of the user
+        sprite.setSize(WIDTH, HEIGHT);
     }
 
     /**
      * The method which takes care of the health bar's positioning
-     * @param x The x coordinate of the zombie
-     * @param y The y coordinate of the zombie
-     * @param health The health left
+     *
+     * @param x        The x coordinate of the zombie
+     * @param y        The y coordinate of the zombie
+     * @param health   The health left
      * @param userData The character whose health bar it is
      */
-    public void updatePosition(float x, float y, float health,int userData){
+    public void updatePosition(float x, float y, float health, int userData) {
         updateHealth(health);
-        sprite.setPosition(x+WIDTH_SPACING,y+ZombieAttributes.ZOMBIE_HEIGHT-HEIGHT_SPACING); //y up coordinate system hence we add the height for the bar to be on top of the user
-        if(userData > 100){
+        sprite.setPosition(x + WIDTH_SPACING, y + ZombieAttributes.ZOMBIE_HEIGHT - HEIGHT_SPACING); //y up coordinate system hence we add the height for the bar to be on top of the user
+        if (userData > 100) {
             //Team 2
             font.setColor(Color.WHITE);
-        }else {
+        } else {
             font.setColor(Color.GREEN);
         }
     }
+
     /**
      * The method which updates the health bar width
+     *
      * @param health health out of 100 of character, used to alter the width of the bar
      */
-    public void updateHealth(float health){
-        sprite.setSize(WIDTH-100+health,HEIGHT);
+    public void updateHealth(float health) {
+        sprite.setSize(WIDTH - 100 + health, HEIGHT);
     }
 
     /**
      * Method which renders the health bar into the world
-     * @param batch The Sprite for the bar
+     *
+     * @param batch    The Sprite for the bar
      * @param userdata The character whose health bar it is
-     * @param isLeft The direction the character is facing
+     * @param isLeft   The direction the character is facing
      */
-    //Renders into world
-    public void drawHealthBar(SpriteBatch batch, int userdata, boolean isLeft){
+    public void drawHealthBar(SpriteBatch batch, int userdata, boolean isLeft) {
         String team = "Team ";
-        if(userdata > 100){
+        if (userdata > 100) {
             //Team 1
             team += "1";
-        }else{
+        } else {
             team += "2";
         }
-        if(isLeft){
-            sprite.setPosition(sprite.getX()-30,sprite.getY());
+        if (isLeft) {
+            sprite.setPosition(sprite.getX() - 30, sprite.getY());
         }
-        font.draw(batch, team, sprite.getX()+22, sprite.getY() + 30);
+        font.draw(batch, team, sprite.getX() + 22, sprite.getY() + 30);
         sprite.draw(batch);
     }
 

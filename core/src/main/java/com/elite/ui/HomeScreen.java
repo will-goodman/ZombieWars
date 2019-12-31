@@ -19,170 +19,158 @@ import com.elite.world.SpriteRenderer;
 
 /**
  * Create object for home screen
+ *
  * @author WEI-TSE CHENG
  */
 public class HomeScreen implements Screen {
-	
-	private Stage stage;
-	private Skin menuSkin;
-	private Texture bgTexture;
-	private Image bg;
-	private TextButton startButton;
-	private TextButton settingsButton;
-	private TextButton exitButton;
-	private TextButton singlePlayerButton;
-	private SpriteBatch batch;
-	private BitmapFont menuTitle;
 
-	private settingScreen settingScreen = new settingScreen();
+    private Stage stage;
+    private Skin menuSkin;
+    private Texture bgTexture;
+    private SpriteBatch batch;
+    private BitmapFont menuTitle;
+
+    private SettingScreen settingScreen = new SettingScreen();
 
 
+    /**
+     * The method which creates the Home Screen
+     */
+    @Override
+    public void show() {
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        Gdx.graphics.setTitle("Zombie Wars");
+
+        menuSkin = new Skin(Gdx.files.internal("menu_skin/menuButton.json"));
 
 
+        bgTexture = new Texture(Gdx.files.internal("maps/BG.png"));
+        Image bg = new Image(bgTexture);
 
-	/**
-	 * The method which creates the Home Screen
-	 */
-	@Override
-	public void show() {
-		
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		Gdx.graphics.setTitle("Zombie Wars");
+        batch = new SpriteBatch();
+        menuTitle = new BitmapFont(Gdx.files.internal("menu_skin/carterone.fnt"));
+        menuTitle.getData().setScale(2f, 2f);
 
-		menuSkin = new  Skin(Gdx.files.internal("menu_skin/menuButton.json")); 
-		
-		
-		bgTexture = new Texture(Gdx.files.internal("maps/BG.png"));
-		bg = new Image(bgTexture);
-		
-		batch = new SpriteBatch();
-		menuTitle = new BitmapFont(Gdx.files.internal("menu_skin/carterone.fnt"));
-		menuTitle.getData().setScale(2f,2f);
-		
-		startButton = new TextButton("Multiplayer", menuSkin, "carterone");
-		startButton.setPosition(450, 350);
-		startButton.setWidth(200f);
-		startButton.setHeight(80);
-		settingsButton = new TextButton("Settings", menuSkin, "carterone");
-		settingsButton.setPosition(625, 250);
-		settingsButton.setWidth(200f);
-		settingsButton.setHeight(80);
-		exitButton = new TextButton("Exit", menuSkin, "carterone");
-		exitButton.setPosition(625, 50);
-		exitButton.setWidth(200f);
-		exitButton.setHeight(80);
-		singlePlayerButton = new TextButton("Singleplayer", menuSkin, "carterone");
-		singlePlayerButton.setPosition(800, 350);
-		singlePlayerButton.setWidth(200f);
-		singlePlayerButton.setHeight(80);
-		
-
-		startButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Client client = new Client();
-				if(client.getConnectionStatus()) {
-					((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(client));
-					dispose();
-				}
-			}
-		});
-
-		singlePlayerButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				((Game)Gdx.app.getApplicationListener()).setScreen(new SpriteRenderer());
-				dispose();
-			}
-		});
-		
-		settingsButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(settingScreen);
-				dispose();
-
-			}
-		});
-
-		exitButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();				
-			}
-		});
-		
+        TextButton startButton = new TextButton("Multiplayer", menuSkin, "carterone");
+        startButton.setPosition(450, 350);
+        startButton.setWidth(200f);
+        startButton.setHeight(80);
+        TextButton settingsButton = new TextButton("Settings", menuSkin, "carterone");
+        settingsButton.setPosition(625, 250);
+        settingsButton.setWidth(200f);
+        settingsButton.setHeight(80);
+        TextButton exitButton = new TextButton("Exit", menuSkin, "carterone");
+        exitButton.setPosition(625, 50);
+        exitButton.setWidth(200f);
+        exitButton.setHeight(80);
+        TextButton singlePlayerButton = new TextButton("Singleplayer", menuSkin, "carterone");
+        singlePlayerButton.setPosition(800, 350);
+        singlePlayerButton.setWidth(200f);
+        singlePlayerButton.setHeight(80);
 
 
+        startButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Client client = new Client();
+                if (client.getConnectionStatus()) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(client));
+                    dispose();
+                }
+            }
+        });
 
-		
+        singlePlayerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new SpriteRenderer());
+                dispose();
+            }
+        });
 
-		
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(settingScreen);
+                dispose();
 
-		stage.addActor(bg);
-		stage.addActor(startButton);
-		stage.addActor(settingsButton);
-		stage.addActor(exitButton);
-		stage.addActor(singlePlayerButton);
+            }
+        });
+
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
 
 
-		AudioAccessor.startMusic("testMusic");
-	}
+        stage.addActor(bg);
+        stage.addActor(startButton);
+        stage.addActor(settingsButton);
+        stage.addActor(exitButton);
+        stage.addActor(singlePlayerButton);
 
-	@Override
-	public void resize(int width, int height) {
 
-	}
+        AudioAccessor.startMusic("testMusic");
+    }
 
-	@Override
-	public void pause() {
+    @Override
+    public void resize(int width, int height) {
 
-	}
+    }
 
-	@Override
-	public void resume() {
+    @Override
+    public void pause() {
 
-	}
+    }
 
-	@Override
-	public void hide() {
+    @Override
+    public void resume() {
 
-	}
+    }
 
-	/**
-	 * The rendering method for the home screen
-	 * @param delta The rendering time
-	 */
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		
-		stage.draw();
-		
-		batch.begin();
+    @Override
+    public void hide() {
 
-		menuTitle.draw(batch, "Zombie Wars", 525, 600);
+    }
 
-		batch.end();
-	}
+    /**
+     * The rendering method for the home screen
+     *
+     * @param delta The rendering time
+     */
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	/**
-	 * Method which clears the screen
-	 */
-	@Override
-	public void dispose() {
-		
-		stage.dispose();
-		menuSkin.dispose();
-		batch.dispose();
-		bgTexture.dispose();
-		menuTitle.dispose();
-		
-	
-	}
-	
+
+        stage.draw();
+
+        batch.begin();
+
+        menuTitle.draw(batch, "Zombie Wars", 525, 600);
+
+        batch.end();
+    }
+
+    /**
+     * Method which clears the screen
+     */
+    @Override
+    public void dispose() {
+
+        stage.dispose();
+        menuSkin.dispose();
+        batch.dispose();
+        bgTexture.dispose();
+        menuTitle.dispose();
+
+
+    }
+
 
 }
