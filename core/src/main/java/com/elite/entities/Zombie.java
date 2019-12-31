@@ -407,9 +407,7 @@ public class Zombie extends Sprite {
      * This method is responsible for increasing the players grenade ammo when they pick up an ammo crate.
      */
     public void pickupGrenades() {
-
         numGrenades += 2;
-        System.out.println("NUMGRENADES: " + numGrenades);
     }
 
     /**
@@ -420,7 +418,6 @@ public class Zombie extends Sprite {
         if (this.health > 100) {
             this.health = 100;
         }
-        System.out.println("HEALTH: " + health);
     }
 
 }
