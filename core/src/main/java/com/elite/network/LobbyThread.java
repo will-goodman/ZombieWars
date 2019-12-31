@@ -1,11 +1,13 @@
 package com.elite.network;
 
 import com.elite.game.NetworkGame;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
  * Continuously sends the current game state to a client in the game lobby
+ *
  * @author Will Goodman
  */
 public class LobbyThread extends Thread {
@@ -17,8 +19,9 @@ public class LobbyThread extends Thread {
 
     /**
      * Creates a new LobbyThread object
+     *
      * @param game The game state
-     * @param out The output stream to the client
+     * @param out  The output stream to the client
      */
     public LobbyThread(NetworkGame game, ObjectOutputStream out) {
         this.game = game;
@@ -38,13 +41,14 @@ public class LobbyThread extends Thread {
                 Thread.sleep(TICK_RATE);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Stops sending data to the client if the lobby has ended.
+     */
     public void endLobby() {
         inLobby = false;
     }

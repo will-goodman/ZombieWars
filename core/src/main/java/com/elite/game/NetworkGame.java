@@ -5,12 +5,13 @@ import java.util.HashMap;
 
 /**
  * Stores the game state on the server side to share with all players
+ *
  * @author Will Goodman
  */
 public class NetworkGame implements Serializable {
 
     public String playerName;
-    private HashMap<String, GameObject> objects = new HashMap<String, GameObject>();
+    private HashMap<String, GameObject> objects = new HashMap<>();
 
     /**
      * @return A HashMap of all objects in the game, with their UserData as the key
@@ -21,25 +22,32 @@ public class NetworkGame implements Serializable {
 
     /**
      * Adds a new object to the game
+     *
      * @param newObject The new object
-     * @param owner The object's UserData
+     * @param owner     The object's UserData
      */
     public void addObject(GameObject newObject, String owner) {
         objects.put(owner, newObject);
     }
 
+    //TODO Investigate bug in removePlayer
+
     /**
      * Removes an object from the game
+     *
      * @param userData The UserData of the object to remove
      */
-    public void removePlayer(int userData) { objects.remove(userData); }
+    public void removePlayer(int userData) {
+        objects.remove(userData);
+    }
 
     /**
      * Updates the details about an object in the game
-     * @param key The UserData of the object to update
+     *
+     * @param key     The UserData of the object to update
      * @param command The new command
-     * @param x The new x coordinate
-     * @param y The new y coordinate
+     * @param x       The new x coordinate
+     * @param y       The new y coordinate
      */
     public void updateGame(String key, String command, float x, float y) {
         GameObject object = objects.get(key);

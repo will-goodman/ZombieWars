@@ -4,9 +4,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * Interface for crate objects
+ *
  * @author Will Goodman
  */
 public interface Crate {
+
+    //TODO Look at removing getUserData
 
     /**
      * @return The crate's user data

@@ -30,7 +30,6 @@ public class Zombie extends Sprite {
     private Body body;
     private Texture zombieTexture;
     private SpriteBatch batch;
-    private Sprite sprite;
     private Rectangle zombie;
 
     private static final float LEFT_MAP_EDGE = 0f;
@@ -48,7 +47,6 @@ public class Zombie extends Sprite {
     private int health = 100;
 
     private SpriteAnimator spriteAnimator;
-    private MyInputProcessor inputProcessor;
     private GameType spriteRenderer;
 
     //Arrow attributes
@@ -74,11 +72,11 @@ public class Zombie extends Sprite {
     public Zombie(World world, float x, float y, GameType spriteRenderer, int userData, boolean control) {
         super(new Texture(Gdx.files.internal("sprite/male/Idle (2).png")));
         zombieTexture = getTexture();
-        this.world = world;
+        Zombie.world = world;
         this.spriteRenderer = spriteRenderer;
         this.userData = userData;
         spriteAnimator = new SpriteAnimator();
-        inputProcessor = new MyInputProcessor(spriteRenderer);
+        MyInputProcessor inputProcessor = new MyInputProcessor(spriteRenderer);
         Gdx.input.setInputProcessor(inputProcessor);
         bullets = new ArrayList<>();
         grenades = new ArrayList<>();
@@ -146,7 +144,7 @@ public class Zombie extends Sprite {
     /**
      * This method decreases the players health based on how much damage they took.
      *
-     * @param damage
+     * @param damage The amount to reduce the player's health
      */
     public void getHit(int damage) {
         health -= damage;
@@ -207,9 +205,9 @@ public class Zombie extends Sprite {
      * It also sets the properties for the zombie.
      */
     private void createBody() {
-        /*Adding character to screen*/
+        // Adding character to screen
         batch = new SpriteBatch();
-        sprite = new Sprite(zombieTexture);
+        Sprite sprite = new Sprite(zombieTexture);
 
         sprite.setScale(1 / 4f);
 
@@ -328,9 +326,6 @@ public class Zombie extends Sprite {
         bullets.removeAll(bulletsToRemove);
 
         this.setPosition(body.getPosition().x, body.getPosition().y - zombie.height / 2);
-        // System.out.println("PLAYER position " + this.getX() + " " + this.getY());
-        // System.out.println("BODY position " + body.getPosition().x + " " + body.getPosition().y);
-
     }
 
     /**

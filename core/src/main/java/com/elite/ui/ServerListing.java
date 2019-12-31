@@ -25,6 +25,11 @@ import com.elite.network.Client;
 import java.util.ArrayList;
 
 
+/**
+ * UI which shows all available multiplayer servers to join.
+ *
+ * @author Will Goodman
+ */
 public class ServerListing implements Screen {
 
 
@@ -47,16 +52,11 @@ public class ServerListing implements Screen {
 
 
     private ArrayList<Button> connectButtons = new ArrayList<>();
-    
-    
-    //change button
-    private Skin menuSkin;
-    private TextButton menuButton;
-    private TextButton refreshButton;
-    private TextButton hostButton;
+
 
     /**
      * The Constructor of the server screen
+     *
      * @param client The Client on whose screen the home screen will be rendered
      */
     public ServerListing(Client client) {
@@ -68,7 +68,6 @@ public class ServerListing implements Screen {
         Button.ButtonStyle style = new Button.ButtonStyle();
         style.up = new TextureRegionDrawable(new TextureRegion(UP_TEXTURE));
         style.down = new TextureRegionDrawable(new TextureRegion(DOWN_TEXTURE));
-
 
     }
 
@@ -83,62 +82,61 @@ public class ServerListing implements Screen {
             System.out.println(server);
         }
 
-      
-        
-        
-        //change button
-		menuSkin = new  Skin(Gdx.files.internal("menu_skin/menuButton.json")); 
-		menuButton = new TextButton("︎Menu", menuSkin, "carterone");
-		menuButton.setPosition((float)0.03*CAMERA.viewportWidth, (float)0.028*CAMERA.viewportHeight);
-		menuButton.setWidth(200f);
-		menuButton.setHeight(80);
-		
-		refreshButton = new TextButton("︎Refresh", menuSkin, "carterone");
-		refreshButton.setPosition((float)0.2*CAMERA.viewportWidth, (float)0.028*CAMERA.viewportHeight);
-		refreshButton.setWidth(200f);
-		refreshButton.setHeight(80);
-		
-		hostButton = new TextButton("︎Host", menuSkin, "carterone");
-		hostButton.setPosition((float)0.37*CAMERA.viewportWidth, (float)0.028*CAMERA.viewportHeight);
-		hostButton.setWidth(200f);
-		hostButton.setHeight(80);
-		
-		menuButton.addListener(new ClickListener() {
+        Skin menuSkin = new Skin(Gdx.files.internal("menu_skin/menuButton.json"));
+        TextButton menuButton = new TextButton("︎Menu", menuSkin, "carterone");
+        menuButton.setPosition((float) 0.03 * CAMERA.viewportWidth, (float) 0.028 * CAMERA.viewportHeight);
+        menuButton.setWidth(200f);
+        menuButton.setHeight(80);
+
+        TextButton refreshButton = new TextButton("︎Refresh", menuSkin, "carterone");
+        refreshButton.setPosition((float) 0.2 * CAMERA.viewportWidth, (float) 0.028 * CAMERA.viewportHeight);
+        refreshButton.setWidth(200f);
+        refreshButton.setHeight(80);
+
+        TextButton hostButton = new TextButton("︎Host", menuSkin, "carterone");
+        hostButton.setPosition((float) 0.37 * CAMERA.viewportWidth, (float) 0.028 * CAMERA.viewportHeight);
+        hostButton.setWidth(200f);
+        hostButton.setHeight(80);
+
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new HomeScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen());
                 dispose();
             }
         });
-		
-		refreshButton.addListener(new ClickListener() {
+
+        refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
                 dispose();
             }
-		});
-		
-		hostButton.addListener(new ClickListener() {
+        });
+
+        hostButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //host lobby
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(CLIENT));
                 dispose();
             }
         });
-		
-		
-		
-		STAGE.addActor(menuButton);
-		STAGE.addActor(refreshButton);
-		STAGE.addActor(hostButton);
 
 
+        STAGE.addActor(menuButton);
+        STAGE.addActor(refreshButton);
+        STAGE.addActor(hostButton);
 
 
     }
 
+    /**
+     * Resize the UI to fit the window size.
+     *
+     * @param width  The width of the window in pixels.
+     * @param height The height of the window in pixels.
+     */
     @Override
     public void resize(int width, int height) {
         VIEWPORT.update(width, height);
@@ -164,13 +162,13 @@ public class ServerListing implements Screen {
 
     /**
      * The rendering method for the server screen
+     *
      * @param delta The rendering time
      */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.39f, 0.58f, 0.92f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
 
         BATCH.setProjectionMatrix(CAMERA.combined);
@@ -186,14 +184,14 @@ public class ServerListing implements Screen {
         SHAPE_RENDERER.setProjectionMatrix(CAMERA.combined);
         SHAPE_RENDERER.begin(ShapeRenderer.ShapeType.Filled);
         SHAPE_RENDERER.setColor(1, 1, 1, 0.3f);
-        SHAPE_RENDERER.rect((float)(0.1*CAMERA.viewportWidth), (float)(0.1*CAMERA.viewportHeight), (float)(0.8*CAMERA.viewportWidth), (float)(0.8*CAMERA.viewportHeight));
+        SHAPE_RENDERER.rect((float) (0.1 * CAMERA.viewportWidth), (float) (0.1 * CAMERA.viewportHeight), (float) (0.8 * CAMERA.viewportWidth), (float) (0.8 * CAMERA.viewportHeight));
         SHAPE_RENDERER.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         //Title
-        Label label1 = new Label("Servers",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        label1.setSize(Gdx.graphics.getWidth(),100);
-        label1.setPosition(20,950);
+        Label label1 = new Label("Servers", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        label1.setSize(Gdx.graphics.getWidth(), 100);
+        label1.setPosition(20, 950);
         label1.setAlignment(Align.topLeft);
         label1.setFontScale(2);
         STAGE.addActor(label1);
@@ -201,14 +199,12 @@ public class ServerListing implements Screen {
         //Server listing (table)
         Skin skin = new Skin(Gdx.files.internal("skins/flat-earth-ui.json"));
         Table servers = new Table();
-        servers.row().size((float)(0.4*CAMERA.viewportWidth), (float) (0.05* CAMERA.viewportHeight));
+        servers.row().size((float) (0.4 * CAMERA.viewportWidth), (float) (0.05 * CAMERA.viewportHeight));
         Label serverName = new Label("Server Name", skin);
         Label numPlayers = new Label("Number of Players", skin);
         serverName.setFontScale(2);
-        //servers.add(serverName);
         numPlayers.setFontScale(2);
 
-        //servers.add(numPlayers);
         ArrayList<String> listing = CLIENT.getServers();
 
         //must create a connection button and listener for each lobby
@@ -229,7 +225,7 @@ public class ServerListing implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println(listing.get(lobbyNum));
                     String[] lobbyDetails = listing.get(lobbyNum).split(" ");
-                    if(lobbyDetails[2].equals("false")) {
+                    if (lobbyDetails[2].equals("false")) {
                         ClientGame game = new ClientGame(CLIENT, "Player2");
                         CLIENT.setGame(game);
 
@@ -249,15 +245,15 @@ public class ServerListing implements Screen {
             });
             countLobbies++;
         }
+
         //Make a row for each server
-        //Label lobby;
         int countServers = 0;
         for (String server : listing) {
             servers.row();
-            servers.row().size((float)(connectButtons.get(countServers).getWidth()), (float) (connectButtons.get(countServers).getHeight()));
+            servers.row().size(connectButtons.get(countServers).getWidth(), connectButtons.get(countServers).getHeight());
 
             String[] serverDetails = server.split(" ");
-            if(serverDetails[2].equals("false")) {
+            if (serverDetails[2].equals("false")) {
                 Image unlockedImage = new Image(UNLOCKED_TEXTURE);
                 unlockedImage.setSize(165, 263);
                 servers.add(unlockedImage);
@@ -267,22 +263,22 @@ public class ServerListing implements Screen {
                 servers.add(lockedImage);
             }
             Label lobbyName = new Label(serverDetails[0], skin);
-            lobbyName.setFontScale((float)1.5);
+            lobbyName.setFontScale((float) 1.5);
             servers.add(lobbyName);
             Label lobbyPlayers = new Label(serverDetails[1], skin);
-            lobbyName.setFontScale((float)1.5);
+            lobbyName.setFontScale((float) 1.5);
             servers.add(lobbyPlayers);
             servers.add(connectButtons.get(countServers));
             countServers++;
         }
 
-        servers.setPosition((float)(0.5*CAMERA.viewportWidth),(float)(0.9*CAMERA.viewportHeight));
+        servers.setPosition((float) (0.5 * CAMERA.viewportWidth), (float) (0.9 * CAMERA.viewportHeight));
         servers.top();
         STAGE.addActor(servers);
 
-      
+
         STAGE.act();
-        
+
         STAGE.draw();
     }
 

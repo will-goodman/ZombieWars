@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
+ * Grenade entity thrown by Zombies.
+ *
  * @author Jacob Wheale
  */
 public class Grenade {
@@ -14,13 +16,10 @@ public class Grenade {
     private static World world;
     private static Texture texture;
     private static final int WIDTH = 30;
-    private static final int HEIGHT = 47;
-
 
     private float x, y;
     private boolean remove = false;
     private boolean left;
-
     private Body body;
 
     /**
@@ -28,7 +27,7 @@ public class Grenade {
      *
      * @return The x position of the grenade.
      */
-    float getX() {
+    public float getX() {
         return x;
     }
 
@@ -37,7 +36,7 @@ public class Grenade {
      *
      * @return The y position of the grenade.
      */
-    float getY() {
+    public float getY() {
         return y;
     }
 
@@ -46,7 +45,7 @@ public class Grenade {
      *
      * @return The value of the boolean variable 'remove'
      */
-    boolean getRemove() {
+    public boolean getRemove() {
         return remove;
     }
 
@@ -55,7 +54,7 @@ public class Grenade {
      *
      * @return The physics body that represents this grenade.
      */
-    Body getBody() {
+    public Body getBody() {
         return this.body;
     }
 
@@ -69,8 +68,8 @@ public class Grenade {
      * @param y     The Y position of where the grenade will start
      * @param left  boolean for whether the player is facing left or not
      */
-    Grenade(World world, float x, float y, boolean left) {
-        this.world = world;
+    public Grenade(World world, float x, float y, boolean left) {
+        Grenade.world = world;
         this.x = x;
         this.y = y;
         this.left = left;
@@ -114,8 +113,9 @@ public class Grenade {
         grenade_shape.dispose();
 
 
-        // initial force applied to the grenade when its created to create the arc path.
-        // if facing left then apply force in the opposite direction.
+        /* initial force applied to the grenade when its created to create the arc path.
+           if facing left then apply force in the opposite direction.
+        */
         if (left) {
             body.applyLinearImpulse(-120000000f, 120000000f, body.getPosition().x, body.getPosition().y, true);
         } else {
@@ -150,7 +150,7 @@ public class Grenade {
      *
      * @param batch The spriteBatch object passed which is responsible for rendering on the screen.
      */
-    void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
 
         batch.draw(texture, x, y);
         update();

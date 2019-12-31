@@ -1,10 +1,12 @@
 package com.elite.network;
 
 import com.elite.game.NetworkGame;
+
 import java.util.ArrayList;
 
 /**
  * Stores the information about players and current game state of a game lobby
+ *
  * @author Will Goodman
  */
 public class Lobby {
@@ -18,7 +20,8 @@ public class Lobby {
 
     /**
      * Creates a new public game lobby
-     * @param lobbyName The name of the lobby
+     *
+     * @param lobbyName  The name of the lobby
      * @param hostPlayer The name of the player who makes/hosts the lobby
      */
     public Lobby(String lobbyName, Player hostPlayer) {
@@ -29,10 +32,11 @@ public class Lobby {
 
     /**
      * Creates a new private game lobby
-     * @param lobbyName The name of the lobby
-     * @param hostPlayer The name of the player who makes/hosts the lobby
+     *
+     * @param lobbyName      The name of the lobby
+     * @param hostPlayer     The name of the player who makes/hosts the lobby
      * @param hashedPassword The hashed password which is used to access the lobby
-     * @param salt The salt which is to be used in conjunction with the password
+     * @param salt           The salt which is to be used in conjunction with the password
      */
     public Lobby(String lobbyName, Player hostPlayer, String hashedPassword, String salt) {
         this.LOBBY_NAME = lobbyName;
@@ -44,6 +48,7 @@ public class Lobby {
 
     /**
      * Gets the lobby's name
+     *
      * @return The lobby's name
      */
     public String getName() {
@@ -52,6 +57,7 @@ public class Lobby {
 
     /**
      * Get's the game state
+     *
      * @return The current game state
      */
     public NetworkGame getGame() {
@@ -60,6 +66,7 @@ public class Lobby {
 
     /**
      * Sets the game state
+     *
      * @param game The current game state
      */
     public void setGame(NetworkGame game) {
@@ -68,6 +75,7 @@ public class Lobby {
 
     /**
      * Gets all players in the lobby
+     *
      * @return The list of players
      */
     public ArrayList<Player> getPlayers() {
@@ -76,22 +84,31 @@ public class Lobby {
 
     /**
      * Sets the list of players in the lobby
-     * @param players
+     *
+     * @param players The new list of players.
      */
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
+
+    /**
+     * @return Whether the lobby is private or not
+     */
     public boolean getPrivacy() {
         return this.isPrivate;
     }
 
+    /**
+     * @return The salt for the password hash, if the lobby is private, and null if the lobby is public
+     */
     public String getSalt() {
         return this.salt;
     }
 
     /**
      * Adds a new player to the lobby
+     *
      * @param player The new player to add
      */
     public void addPlayer(Player player) {
@@ -100,6 +117,7 @@ public class Lobby {
 
     /**
      * Removes a player from the lobby
+     *
      * @param player The player to remove
      */
     public void removePlayer(Player player) {
@@ -107,14 +125,14 @@ public class Lobby {
     }
 
 
+    /**
+     * Checks an entered hashed password against the lobby's hashed password, if the lobby is private.
+     *
+     * @param hashedPassword The entered hashed password.
+     * @return Whether the two hashes match.
+     */
     public boolean verifyPassword(String hashedPassword) {
-        System.out.println(hashedPassword);
-        System.out.println(this.hashedPassword);
-        if (this.hashedPassword.equals(hashedPassword)) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.hashedPassword.equals(hashedPassword);
     }
 
 }

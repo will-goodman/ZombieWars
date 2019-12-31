@@ -9,11 +9,12 @@ import java.util.Hashtable;
 
 /**
  * The main server object, which listens for new clients connecting
+ *
  * @author Will Goodman
  */
 public class Server {
 
-    private volatile Hashtable<String,Lobby> lobbies = new Hashtable<>();
+    private volatile Hashtable<String, Lobby> lobbies = new Hashtable<>();
     private ServerSocket serverSocket;
 
     /**
@@ -22,9 +23,7 @@ public class Server {
     public void startServer() {
         try {
             serverSocket = new ServerSocket(Keys.MAIN_PORT_NUMBER, 0, InetAddress.getLocalHost());
-            System.out.println("Server started");
-            System.out.println(serverSocket.getInetAddress().getHostAddress());
-            
+
             Socket socket;
 
             while (true) {
