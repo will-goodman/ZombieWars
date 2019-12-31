@@ -3,7 +3,7 @@ Worms-like turn-based game based around zombies. Written in Java.
 
 Created as a team university project.
 
-![Visual Representation](https://github.com/minhalkhan/ZombieWars/blob/master/Screenshot%202019-10-05%20at%2015.52.01.png)
+![Visual Representation](../assets/gameplay_image.png)
 
 ## To run
 
