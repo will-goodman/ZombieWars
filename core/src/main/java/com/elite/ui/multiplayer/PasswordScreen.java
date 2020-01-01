@@ -1,4 +1,4 @@
-package com.elite.ui;
+package com.elite.ui.multiplayer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.elite.game.ClientGame;
+import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
 
 /**

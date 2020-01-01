@@ -1,8 +1,7 @@
-package com.elite.network;
+package com.elite.network.client;
 
-import com.elite.game.ClientGame;
+import com.elite.game.multiplayer.ClientGame;
 
-import com.elite.network.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.elite.world;
+package com.elite.game.logic;
 
 /**
  * Stores the energy cost of different actions.

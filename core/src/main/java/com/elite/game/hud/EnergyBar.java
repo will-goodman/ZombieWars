@@ -1,10 +1,10 @@
-package com.elite.ui;
+package com.elite.game.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.elite.world.WorldAttributes;
+import com.elite.game.world.WorldAttributes;
 
 /**
  * Shows the remaining energy during a player's turn.

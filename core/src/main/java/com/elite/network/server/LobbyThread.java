@@ -1,6 +1,6 @@
 package com.elite.network.server;
 
-import com.elite.game.NetworkGame;
+import com.elite.game.multiplayer.NetworkGame;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

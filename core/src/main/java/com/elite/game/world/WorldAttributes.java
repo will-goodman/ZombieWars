@@ -1,4 +1,4 @@
-package com.elite.world;
+package com.elite.game.world;
 
 /**
  * @author Minhal Khan

@@ -1,4 +1,4 @@
-package com.elite.ui;
+package com.elite.ui.game;
 
 
 import com.badlogic.gdx.Game;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.elite.ui.menu.HomeScreen;
 
 /**
  * Create object for game over screen

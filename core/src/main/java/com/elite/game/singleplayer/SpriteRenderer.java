@@ -1,4 +1,4 @@
-package com.elite.world;
+package com.elite.game.singleplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,7 +13,10 @@ import com.elite.entities.pickups.Crate;
 import com.elite.entities.pickups.HealthCrate;
 import com.elite.entities.weapons.Bullet;
 import com.elite.game.GameType;
-import com.elite.ui.EnergyBar;
+import com.elite.game.logic.EnergyCost;
+import com.elite.game.world.RenderWorld;
+import com.elite.game.world.WorldAttributes;
+import com.elite.game.hud.EnergyBar;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

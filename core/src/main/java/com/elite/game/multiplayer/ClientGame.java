@@ -1,4 +1,4 @@
-package com.elite.game;
+package com.elite.game.multiplayer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -13,12 +13,13 @@ import com.elite.entities.pickups.AmmoCrate;
 import com.elite.entities.pickups.Crate;
 import com.elite.entities.pickups.HealthCrate;
 import com.elite.entities.weapons.Bullet;
+import com.elite.game.GameType;
 import com.elite.network.client.Client;
-import com.elite.ui.EnergyBar;
-import com.elite.ui.ServerListing;
-import com.elite.world.EnergyCost;
-import com.elite.world.RenderWorld;
-import com.elite.world.WorldAttributes;
+import com.elite.game.hud.EnergyBar;
+import com.elite.ui.multiplayer.ServerListing;
+import com.elite.game.logic.EnergyCost;
+import com.elite.game.world.RenderWorld;
+import com.elite.game.world.WorldAttributes;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

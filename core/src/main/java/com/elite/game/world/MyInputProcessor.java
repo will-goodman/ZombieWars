@@ -1,8 +1,9 @@
-package com.elite.world;
+package com.elite.game.world;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.elite.game.GameType;
+import com.elite.game.singleplayer.SpriteRenderer;
 
 /**
  * @author Jacob Wheale

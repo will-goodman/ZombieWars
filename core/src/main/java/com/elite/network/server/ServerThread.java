@@ -1,7 +1,7 @@
 package com.elite.network.server;
 
-import com.elite.game.GameObject;
-import com.elite.game.NetworkGame;
+import com.elite.game.multiplayer.GameObject;
+import com.elite.game.multiplayer.NetworkGame;
 
 import java.io.*;
 import java.net.Socket;

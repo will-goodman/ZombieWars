@@ -1,4 +1,4 @@
-package com.elite.world;
+package com.elite.game.world;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

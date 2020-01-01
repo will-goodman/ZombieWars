@@ -1,4 +1,4 @@
-package com.elite.game;
+package com.elite.game.multiplayer;
 
 import java.io.Serializable;
 

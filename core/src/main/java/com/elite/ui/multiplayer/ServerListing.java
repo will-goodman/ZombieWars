@@ -1,4 +1,4 @@
-package com.elite.ui;
+package com.elite.ui.multiplayer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,8 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.elite.game.ClientGame;
+import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
+import com.elite.ui.menu.HomeScreen;
 
 import java.util.ArrayList;
 

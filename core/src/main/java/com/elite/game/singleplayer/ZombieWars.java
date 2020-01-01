@@ -1,8 +1,8 @@
-package com.elite.world;
+package com.elite.game.singleplayer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.elite.ui.HomeScreen;
+import com.elite.ui.menu.HomeScreen;
 
 /*
 @author Minhal Khan

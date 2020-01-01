@@ -14,14 +14,14 @@ import com.elite.audio.AudioAccessor;
 import com.elite.entities.weapons.Bullet;
 import com.elite.entities.weapons.Grenade;
 import com.elite.game.GameType;
-import com.elite.ui.Aim;
-import com.elite.ui.HealthBar;
-import com.elite.world.EnergyCost;
-import com.elite.world.MyInputProcessor;
+import com.elite.game.hud.Aim;
+import com.elite.game.hud.HealthBar;
+import com.elite.game.logic.EnergyCost;
+import com.elite.game.world.MyInputProcessor;
 
 import java.util.ArrayList;
 
-import static com.elite.world.SpriteRenderer.getAllowMove;
+import static com.elite.game.singleplayer.SpriteRenderer.getAllowMove;
 
 /**
  * @author Jacob Wheale

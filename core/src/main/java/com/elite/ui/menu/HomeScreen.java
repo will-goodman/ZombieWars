@@ -1,4 +1,4 @@
-package com.elite.ui;
+package com.elite.ui.menu;
 
 import com.badlogic.gdx.*;
 
@@ -15,7 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import com.elite.audio.AudioAccessor;
 import com.elite.network.client.Client;
-import com.elite.world.SpriteRenderer;
+import com.elite.game.singleplayer.SpriteRenderer;
+import com.elite.ui.multiplayer.ServerListing;
+import com.elite.ui.settings.SettingScreen;
 
 /**
  * Create object for home screen
