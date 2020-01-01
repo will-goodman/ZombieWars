@@ -1,6 +1,7 @@
 package com.elite.ui;
 
 import com.badlogic.gdx.Game;
+import com.elite.audio.AudioSettings;
 import com.elite.ui.menu.HomeScreen;
 
 /**
@@ -15,7 +16,8 @@ public class LaunchUI extends Game {
      */
     @Override
     public void create() {
-        setScreen(new HomeScreen());
+        AudioSettings audioSettings = new AudioSettings();
+        setScreen(new HomeScreen(audioSettings));
     }
 
 }

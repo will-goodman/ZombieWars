@@ -14,7 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.elite.audio.AudioAccessor;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.ui.menu.HomeScreen;
 
 /**
@@ -34,6 +35,12 @@ public class SettingScreen implements Screen {
     private BitmapFont musicCheckboxFont;
     private BitmapFont volumeSoundFont;
     private BitmapFont soundCheckboxFont;
+
+    private AudioSettings audioSettings;
+
+    public SettingScreen(AudioSettings audioSettings) {
+        this.audioSettings = audioSettings;
+    }
 
     /**
      * The method which creates the Setting Screen
@@ -75,42 +82,40 @@ public class SettingScreen implements Screen {
         backButton.setWidth(200);
         backButton.setHeight(100);
 
-        final HomeScreen homeScreen = new HomeScreen();
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(homeScreen);
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
             }
         });
 
         musicCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                AudioAccessor.allowMusicSwitch();
+                audioSettings.toggleMusic();
             }
         });
 
         soundCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                AudioAccessor.allowSoundsSwitch();
+                audioSettings.toggleSoundEffects();
             }
         });
 
         volumeMusicSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                AudioAccessor.setMusicVolume(volumeMusicSlider.getValue());
+                audioSettings.setMusicVolume(volumeMusicSlider.getValue());
             }
         });
 
         volumeSoundSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                AudioAccessor.setSoundVolume(volumeSoundSlider.getValue());
+                audioSettings.setSoundEffectsVolume(volumeSoundSlider.getValue());
             }
         });
-
 
         stage.addActor(bg);
         stage.addActor(volumeMusicSlider);
@@ -121,6 +126,13 @@ public class SettingScreen implements Screen {
 
 
         Gdx.input.setInputProcessor(stage);
+
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        } else {
+            Audio.backgroundMusic.stop();
+        }
 
     }
 
@@ -183,6 +195,7 @@ public class SettingScreen implements Screen {
         musicCheckboxFont.dispose();
         volumeSoundFont.dispose();
         soundCheckboxFont.dispose();
+        Audio.backgroundMusic.dispose();
     }
 
 }

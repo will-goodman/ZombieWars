@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
 
@@ -33,14 +35,17 @@ public class PasswordScreen implements Screen {
     private Stage stage;
     private TextField textField;
 
+    private AudioSettings audioSettings;
+
     /**
      * The Constructor of the password screen
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public PasswordScreen(Client client, String[] lobbyDetails) {
+    public PasswordScreen(Client client, String[] lobbyDetails, AudioSettings audioSettings) {
         this.CLIENT = client;
         this.lobbyDetails = lobbyDetails;
+        this.audioSettings = audioSettings;
     }
 
     /**
@@ -71,7 +76,7 @@ public class PasswordScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //host lobby
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -83,7 +88,7 @@ public class PasswordScreen implements Screen {
                 String lobbyName = lobbyDetails[0] + lobbyDetails[1];
 
                 if (CLIENT.verifyPassword(lobbyName, "Player2", password)) {
-                    ClientGame game = new ClientGame(CLIENT, "Player2");
+                    ClientGame game = new ClientGame(CLIENT, "Player2", audioSettings);
                     CLIENT.setGame(game);
 
 
@@ -94,7 +99,7 @@ public class PasswordScreen implements Screen {
 
                     CLIENT.start();
                 } else {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
                     dispose();
                 }
 
@@ -105,6 +110,10 @@ public class PasswordScreen implements Screen {
         stage.addActor(backButton);
         stage.addActor(submitButton);
 
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
     }
 
     /**
@@ -157,6 +166,7 @@ public class PasswordScreen implements Screen {
     public void dispose() {
         stage.dispose();
         batch.dispose();
+        Audio.backgroundMusic.dispose();
     }
 
 }

@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.ui.menu.HomeScreen;
 
 /**
@@ -24,6 +26,11 @@ public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
 
+    private AudioSettings audioSettings;
+
+    public GameOverScreen(AudioSettings audioSettings) {
+        this.audioSettings = audioSettings;
+    }
 
     /**
      * The method which creates the game over Screen
@@ -49,7 +56,10 @@ public class GameOverScreen implements Screen {
 
         stage.addActor(table);
 
-
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
     }
 
     /**
@@ -60,10 +70,8 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
 
-
-        final HomeScreen homeScreen = new HomeScreen();
         if (Gdx.input.justTouched()) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(homeScreen);
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -97,5 +105,6 @@ public class GameOverScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        Audio.backgroundMusic.dispose();
     }
 }

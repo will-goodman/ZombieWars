@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
 
@@ -47,14 +49,17 @@ public class LobbyCreation implements Screen {
     private TextField passwordTxt;
     private Label passwordLabel;
 
+    private AudioSettings audioSettings;
+
 
     /**
      * The Constructor of the lobby screen
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public LobbyCreation(Client client) {
+    public LobbyCreation(Client client, AudioSettings audioSettings) {
         this.CLIENT = client;
+        this.audioSettings = audioSettings;
     }
 
     /**
@@ -118,7 +123,7 @@ public class LobbyCreation implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -129,7 +134,7 @@ public class LobbyCreation implements Screen {
                 String lobbyName = serverNameTxt.getText();
                 String hostName = hostNameTxt.getText();
 
-                ClientGame game = new ClientGame(CLIENT, hostName);
+                ClientGame game = new ClientGame(CLIENT, hostName, audioSettings);
                 CLIENT.setGame(game);
                 ((Game) Gdx.app.getApplicationListener()).setScreen(game);
                 dispose();
@@ -146,6 +151,11 @@ public class LobbyCreation implements Screen {
 
         STAGE.addActor(backButton);
         STAGE.addActor(createButton);
+
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
 
     }
 
@@ -217,5 +227,6 @@ public class LobbyCreation implements Screen {
         STAGE.dispose();
         BATCH.dispose();
         BACKGROUND_IMG.dispose();
+        Audio.backgroundMusic.dispose();
     }
 }

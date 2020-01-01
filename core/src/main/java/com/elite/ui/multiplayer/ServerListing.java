@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
 import com.elite.ui.menu.HomeScreen;
@@ -53,6 +55,7 @@ public class ServerListing implements Screen {
 
 
     private ArrayList<Button> connectButtons = new ArrayList<>();
+    private AudioSettings audioSettings;
 
 
     /**
@@ -60,9 +63,10 @@ public class ServerListing implements Screen {
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public ServerListing(Client client) {
+    public ServerListing(Client client, AudioSettings audioSettings) {
 
         this.CLIENT = client;
+        this.audioSettings = audioSettings;
 
         Gdx.input.setInputProcessor(STAGE);
 
@@ -102,7 +106,7 @@ public class ServerListing implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
                 dispose();
             }
         });
@@ -110,7 +114,7 @@ public class ServerListing implements Screen {
         refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -119,7 +123,7 @@ public class ServerListing implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //host lobby
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(CLIENT));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -129,6 +133,10 @@ public class ServerListing implements Screen {
         STAGE.addActor(refreshButton);
         STAGE.addActor(hostButton);
 
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
 
     }
 
@@ -227,7 +235,7 @@ public class ServerListing implements Screen {
                     System.out.println(listing.get(lobbyNum));
                     String[] lobbyDetails = listing.get(lobbyNum).split(" ");
                     if (lobbyDetails[2].equals("false")) {
-                        ClientGame game = new ClientGame(CLIENT, "Player2");
+                        ClientGame game = new ClientGame(CLIENT, "Player2", audioSettings);
                         CLIENT.setGame(game);
 
 
@@ -238,7 +246,7 @@ public class ServerListing implements Screen {
 
                         CLIENT.start();
                     } else {
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(new PasswordScreen(CLIENT, lobbyDetails));
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(new PasswordScreen(CLIENT, lobbyDetails, audioSettings));
                         dispose();
                     }
 
@@ -291,5 +299,6 @@ public class ServerListing implements Screen {
         STAGE.dispose();
         BATCH.dispose();
         BACKGROUND_IMG.dispose();
+        Audio.backgroundMusic.dispose();
     }
 }

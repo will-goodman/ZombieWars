@@ -13,11 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import com.elite.audio.AudioAccessor;
+import com.elite.audio.AudioSettings;
 import com.elite.network.client.Client;
 import com.elite.game.singleplayer.SpriteRenderer;
 import com.elite.ui.multiplayer.ServerListing;
 import com.elite.ui.settings.SettingScreen;
+import com.elite.audio.Audio;
 
 /**
  * Create object for home screen
@@ -32,8 +33,11 @@ public class HomeScreen implements Screen {
     private SpriteBatch batch;
     private BitmapFont menuTitle;
 
-    private SettingScreen settingScreen = new SettingScreen();
+    private AudioSettings audioSettings;
 
+    public HomeScreen(AudioSettings audioSettings) {
+        this.audioSettings = audioSettings;
+    }
 
     /**
      * The method which creates the Home Screen
@@ -78,7 +82,7 @@ public class HomeScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Client client = new Client();
                 if (client.getConnectionStatus()) {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(client));
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(client, audioSettings));
                     dispose();
                 }
             }
@@ -95,7 +99,7 @@ public class HomeScreen implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(settingScreen);
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new SettingScreen(audioSettings));
                 dispose();
 
             }
@@ -115,8 +119,10 @@ public class HomeScreen implements Screen {
         stage.addActor(exitButton);
         stage.addActor(singlePlayerButton);
 
-
-        AudioAccessor.startMusic("testMusic");
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
     }
 
     @Override
@@ -171,6 +177,7 @@ public class HomeScreen implements Screen {
         bgTexture.dispose();
         menuTitle.dispose();
 
+        Audio.backgroundMusic.dispose();
 
     }
 

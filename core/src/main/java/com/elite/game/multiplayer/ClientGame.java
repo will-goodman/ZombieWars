@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.elite.audio.AudioAccessor;
+import com.elite.audio.AudioSettings;
 import com.elite.game.entities.characters.Zombie;
 import com.elite.game.entities.pickups.AmmoCrate;
 import com.elite.game.entities.pickups.Crate;
@@ -71,6 +72,8 @@ public class ClientGame extends RenderWorld implements GameType {
     DecimalFormat value = new DecimalFormat("#.#");
     Vector3 mouse_position = new Vector3(0, 0, 0);
 
+    private AudioSettings audioSettings;
+
     /**
      * The Constructor for the Client side of the Game. It contains information about the client name, the zombie name,
      * the floor collisions, and whether the zombie has been created
@@ -78,9 +81,10 @@ public class ClientGame extends RenderWorld implements GameType {
      * @param client     The client object which will be used to connect to the server
      * @param zombieName The name of the player
      */
-    public ClientGame(Client client, String zombieName) {
+    public ClientGame(Client client, String zombieName, AudioSettings audioSettings) {
         this.CLIENT = client;
         this.zombieName = zombieName;
+        this.audioSettings = audioSettings;
         ContactListener myContactListener = new MyContactListener();
         // Create physics world simulation with gravity value
         world = new World(new Vector2(0, -200f), true);
@@ -516,7 +520,7 @@ public class ClientGame extends RenderWorld implements GameType {
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || quitLobby) {
             CLIENT.quitLobby();
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(new Client()));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(new Client(), audioSettings));
         }
 
         checkEnergy();
