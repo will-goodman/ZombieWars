@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.elite.game.ClientGame;
-import com.elite.network.Client;
+import com.elite.network.client.Client;
 
 import java.util.ArrayList;
 

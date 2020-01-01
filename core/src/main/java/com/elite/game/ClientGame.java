@@ -13,7 +13,7 @@ import com.elite.entities.pickups.AmmoCrate;
 import com.elite.entities.pickups.Crate;
 import com.elite.entities.pickups.HealthCrate;
 import com.elite.entities.weapons.Bullet;
-import com.elite.network.Client;
+import com.elite.network.client.Client;
 import com.elite.ui.EnergyBar;
 import com.elite.ui.ServerListing;
 import com.elite.world.EnergyCost;

@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.elite.game.ClientGame;
-import com.elite.network.Client;
+import com.elite.network.client.Client;
 
 /**
  * UI for creating a multiplayer lobby.

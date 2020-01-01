@@ -1,5 +1,6 @@
 package com.elite.network;
 
+import com.elite.network.server.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

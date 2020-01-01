@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.elite.game.ClientGame;
-import com.elite.network.Client;
+import com.elite.network.client.Client;
 
 /**
  * Create object for password screen

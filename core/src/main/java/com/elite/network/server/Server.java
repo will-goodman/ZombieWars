@@ -1,4 +1,6 @@
-package com.elite.network;
+package com.elite.network.server;
+
+import com.elite.network.Keys;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;

@@ -2,6 +2,7 @@ package com.elite.network;
 
 import com.elite.game.ClientGame;
 
+import com.elite.network.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

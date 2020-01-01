@@ -1,4 +1,4 @@
-package com.elite.network;
+package com.elite.network.server;
 
 import com.elite.game.NetworkGame;
 

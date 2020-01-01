@@ -2,6 +2,8 @@ package com.elite.network;
 
 import com.elite.game.NetworkGame;
 
+import com.elite.network.server.Lobby;
+import com.elite.network.server.Player;
 import org.junit.Test;
 
 import java.util.ArrayList;

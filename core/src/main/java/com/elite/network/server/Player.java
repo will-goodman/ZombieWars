@@ -1,4 +1,4 @@
-package com.elite.network;
+package com.elite.network.server;
 
 /**
  * Stores details about a player in the game
