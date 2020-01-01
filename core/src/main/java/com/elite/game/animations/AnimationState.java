@@ -1,4 +1,4 @@
-package com.elite.animations;
+package com.elite.game.animations;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

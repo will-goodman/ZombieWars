@@ -1,11 +1,11 @@
-package com.elite.entities.weapons;
+package com.elite.game.entities.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.elite.entities.characters.Zombie;
+import com.elite.game.entities.characters.Zombie;
 
 /**
  * Bone entity thrown by Zombies.

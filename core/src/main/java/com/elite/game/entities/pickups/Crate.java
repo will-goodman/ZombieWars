@@ -1,4 +1,4 @@
-package com.elite.entities.pickups;
+package com.elite.game.entities.pickups;
 
 import com.badlogic.gdx.physics.box2d.Body;
 

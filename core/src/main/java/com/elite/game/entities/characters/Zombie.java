@@ -1,4 +1,4 @@
-package com.elite.entities.characters;
+package com.elite.game.entities.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,10 +9,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.elite.animations.SpriteAnimator;
+import com.elite.game.animations.SpriteAnimator;
 import com.elite.audio.AudioAccessor;
-import com.elite.entities.weapons.Bone;
-import com.elite.entities.weapons.Grenade;
+import com.elite.game.entities.weapons.Bone;
+import com.elite.game.entities.weapons.Grenade;
 import com.elite.game.GameType;
 import com.elite.game.hud.Aim;
 import com.elite.game.hud.HealthBar;

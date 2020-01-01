@@ -1,4 +1,4 @@
-package com.elite.entities.weapons;
+package com.elite.game.entities.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

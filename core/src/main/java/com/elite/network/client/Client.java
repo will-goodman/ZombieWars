@@ -1,7 +1,7 @@
 package com.elite.network.client;
 
-import com.elite.entities.pickups.Crate;
-import com.elite.entities.characters.Zombie;
+import com.elite.game.entities.pickups.Crate;
+import com.elite.game.entities.characters.Zombie;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.game.multiplayer.GameObject;
 import com.elite.game.multiplayer.NetworkGame;

@@ -1,4 +1,4 @@
-package com.elite.entities.pickups;
+package com.elite.game.entities.pickups;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
- * An ammunition crate which gives a zombie more ammunition when they walk into it
+ * A health crate which increases the zombie's health when they walk into it
  *
  * @author Will Goodman
  */
-public class AmmoCrate extends Sprite implements Crate {
+public class HealthCrate extends Sprite implements Crate {
 
     private SpriteBatch batch;
     private Body body;
@@ -23,15 +23,15 @@ public class AmmoCrate extends Sprite implements Crate {
     private int userData;
 
     /**
-     * Constructs a new AmmoCrate object in the game
+     * Makes a new HealthCrate object
      *
      * @param world    Holds all the physics entities
      * @param x        The start x coordinate
      * @param y        The start y coordinate
-     * @param userData The unique integer representing the ammo crate in the game
+     * @param userData The crate's unique int identifier
      */
-    public AmmoCrate(World world, float x, float y, int userData) {
-        super(new Texture(Gdx.files.internal("ammoCrate.png")));
+    public HealthCrate(World world, float x, float y, int userData) {
+        super(new Texture(Gdx.files.internal("healthCrate.png")));
         crateTexture = getTexture();
         this.world = world;
         this.startingX = x;
@@ -40,22 +40,19 @@ public class AmmoCrate extends Sprite implements Crate {
         createBody();
     }
 
-    /**
-     * @return That the crate is an AmmoCrate
-     */
     public String getType() {
-        return "AMMO";
+        return "HEALTH";
     }
 
     /**
-     * @return The ammo crate's unique int identifier
+     * @return The crate's unique int identifier
      */
     public int getUserData() {
         return this.userData;
     }
 
     /**
-     * @return The crate's body object
+     * @return The crate's body
      */
     @Override
     public Body getBody() {
@@ -63,7 +60,7 @@ public class AmmoCrate extends Sprite implements Crate {
     }
 
     /**
-     * Updates the crate's render in the game
+     * Update's the crate's render
      */
     public void updateCrate() {
         batch.begin();
@@ -73,12 +70,11 @@ public class AmmoCrate extends Sprite implements Crate {
         this.setPosition(body.getPosition().x, body.getPosition().y - 25);
     }
 
-
     /**
-     * Creates the AmmoCrate in the game
+     * Creates the HealthCrate object in the game
      */
     private void createBody() {
-        // Adding character to screen
+        // Adding crate to screen
         batch = new SpriteBatch();
         Sprite sprite = new Sprite(crateTexture);
 

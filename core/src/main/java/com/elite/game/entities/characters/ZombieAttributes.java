@@ -1,4 +1,4 @@
-package com.elite.entities.characters;
+package com.elite.game.entities.characters;
 
 /**
  * @author Minhal Khan

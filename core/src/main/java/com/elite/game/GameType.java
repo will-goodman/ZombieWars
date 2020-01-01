@@ -1,6 +1,6 @@
 package com.elite.game;
 
-import com.elite.entities.characters.Zombie;
+import com.elite.game.entities.characters.Zombie;
 
 import java.util.ArrayList;
 
