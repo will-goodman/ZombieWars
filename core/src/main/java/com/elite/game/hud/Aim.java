@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.elite.entities.characters.ZombieAttributes;
+import com.elite.game.entities.characters.ZombieAttributes;
 
 import java.util.ArrayList;
 
