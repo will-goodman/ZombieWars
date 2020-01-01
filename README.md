@@ -32,7 +32,7 @@ Carried by every zombie with unlimited ammunition. <br>
 A bone is thrown in a straight line until it hits and object.
 A bone does 30 damage and costs 20 energy.
 
-![Bone](core/src/main/resources/bullet.png)
+![Bone](core/src/main/resources/bone.png)
 
 #### Grenade
 Each zombie starts with two grenades, although more can be picked up.<br>

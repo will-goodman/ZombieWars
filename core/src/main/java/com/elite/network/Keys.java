@@ -17,7 +17,7 @@ public class Keys {
     public static final int MAIN_PORT_NUMBER = 9090;
 
     //Change to the IP of the server
-    public static final String SERVER_ADDRESS = "172.22.239.237";
+    public static final String SERVER_ADDRESS = "";
 
     public static final int SALT_LENGTH = 20;
 
