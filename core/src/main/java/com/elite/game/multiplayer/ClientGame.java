@@ -17,6 +17,7 @@ import com.elite.game.entities.weapons.Bone;
 import com.elite.game.GameType;
 import com.elite.network.client.Client;
 import com.elite.game.hud.EnergyBar;
+import com.elite.ui.ZombieWars;
 import com.elite.ui.multiplayer.ServerListing;
 import com.elite.game.logic.EnergyCost;
 import com.elite.game.world.RenderWorld;
@@ -73,6 +74,7 @@ public class ClientGame extends RenderWorld implements GameType {
     Vector3 mouse_position = new Vector3(0, 0, 0);
 
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
     /**
      * The Constructor for the Client side of the Game. It contains information about the client name, the zombie name,
@@ -81,7 +83,8 @@ public class ClientGame extends RenderWorld implements GameType {
      * @param client     The client object which will be used to connect to the server
      * @param zombieName The name of the player
      */
-    public ClientGame(Client client, String zombieName, AudioSettings audioSettings) {
+    public ClientGame(final ZombieWars game, Client client, String zombieName, AudioSettings audioSettings) {
+        this.game = game;
         this.CLIENT = client;
         this.zombieName = zombieName;
         this.audioSettings = audioSettings;
@@ -520,7 +523,8 @@ public class ClientGame extends RenderWorld implements GameType {
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || quitLobby) {
             CLIENT.quitLobby();
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(new Client(), audioSettings));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, new Client(), audioSettings));
+            dispose();
         }
 
         checkEnergy();

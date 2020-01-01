@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
+import com.elite.ui.ZombieWars;
 import com.elite.ui.menu.HomeScreen;
 
 /**
@@ -27,8 +28,10 @@ public class GameOverScreen implements Screen {
     private Stage stage;
 
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
-    public GameOverScreen(AudioSettings audioSettings) {
+    public GameOverScreen(final ZombieWars game, AudioSettings audioSettings) {
+        this.game = game;
         this.audioSettings = audioSettings;
     }
 
@@ -71,7 +74,7 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
 
         if (Gdx.input.justTouched()) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(game, audioSettings));
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

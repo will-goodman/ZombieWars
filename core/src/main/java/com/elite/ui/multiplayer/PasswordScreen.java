@@ -17,6 +17,7 @@ import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
+import com.elite.ui.ZombieWars;
 
 /**
  * Create object for password screen
@@ -36,13 +37,15 @@ public class PasswordScreen implements Screen {
     private TextField textField;
 
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
     /**
      * The Constructor of the password screen
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public PasswordScreen(Client client, String[] lobbyDetails, AudioSettings audioSettings) {
+    public PasswordScreen(final ZombieWars game, Client client, String[] lobbyDetails, AudioSettings audioSettings) {
+        this.game = game;
         this.CLIENT = client;
         this.lobbyDetails = lobbyDetails;
         this.audioSettings = audioSettings;
@@ -76,7 +79,7 @@ public class PasswordScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //host lobby
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -88,18 +91,18 @@ public class PasswordScreen implements Screen {
                 String lobbyName = lobbyDetails[0] + lobbyDetails[1];
 
                 if (CLIENT.verifyPassword(lobbyName, "Player2", password)) {
-                    ClientGame game = new ClientGame(CLIENT, "Player2", audioSettings);
-                    CLIENT.setGame(game);
+                    ClientGame clientGame = new ClientGame(game, CLIENT, "Player2", audioSettings);
+                    CLIENT.setGame(clientGame);
 
 
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(game);
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(clientGame);
                     dispose();
 
                     CLIENT.connectLobby(lobbyDetails[0] + lobbyDetails[1], "Player2");
 
                     CLIENT.start();
                 } else {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, CLIENT, audioSettings));
                     dispose();
                 }
 

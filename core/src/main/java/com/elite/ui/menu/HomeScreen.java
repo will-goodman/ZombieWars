@@ -2,7 +2,9 @@ package com.elite.ui.menu;
 
 import com.badlogic.gdx.*;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,9 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.elite.audio.AudioSettings;
 import com.elite.network.client.Client;
 import com.elite.game.singleplayer.SpriteRenderer;
+import com.elite.ui.ZombieWars;
 import com.elite.ui.multiplayer.ServerListing;
 import com.elite.ui.settings.SettingScreen;
 import com.elite.audio.Audio;
@@ -27,16 +34,24 @@ import com.elite.audio.Audio;
  */
 public class HomeScreen implements Screen {
 
-    private Stage stage;
     private Skin menuSkin;
     private Texture bgTexture;
-    private SpriteBatch batch;
     private BitmapFont menuTitle;
 
     private AudioSettings audioSettings;
 
-    public HomeScreen(AudioSettings audioSettings) {
+    private OrthographicCamera camera;
+    private Stage stage;
+    private final ZombieWars game;
+
+    public HomeScreen(final ZombieWars game, AudioSettings audioSettings) {
+        this.game = game;
         this.audioSettings = audioSettings;
+
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, 800, 480);
+
+        this.stage = new Stage(new ScreenViewport());
     }
 
     /**
@@ -45,17 +60,14 @@ public class HomeScreen implements Screen {
     @Override
     public void show() {
 
-        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         Gdx.graphics.setTitle("Zombie Wars");
 
         menuSkin = new Skin(Gdx.files.internal("menu_skin/menuButton.json"));
 
-
         bgTexture = new Texture(Gdx.files.internal("maps/BG.png"));
         Image bg = new Image(bgTexture);
 
-        batch = new SpriteBatch();
         menuTitle = new BitmapFont(Gdx.files.internal("menu_skin/carterone.fnt"));
         menuTitle.getData().setScale(2f, 2f);
 
@@ -82,7 +94,7 @@ public class HomeScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Client client = new Client();
                 if (client.getConnectionStatus()) {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(client, audioSettings));
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, client, audioSettings));
                     dispose();
                 }
             }
@@ -99,9 +111,8 @@ public class HomeScreen implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new SettingScreen(audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new SettingScreen(game, audioSettings));
                 dispose();
-
             }
         });
 
@@ -119,15 +130,11 @@ public class HomeScreen implements Screen {
         stage.addActor(exitButton);
         stage.addActor(singlePlayerButton);
 
-        if (audioSettings.playingMusic()) {
-            Audio.backgroundMusic.play();
-            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
-        }
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -152,17 +159,25 @@ public class HomeScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
 
+        stage.act(delta);
         stage.draw();
 
-        batch.begin();
+        game.batch.begin();
 
-        menuTitle.draw(batch, "Zombie Wars", 525, 600);
+        menuTitle.draw(game.batch, "Zombie Wars", 525, 600);
 
-        batch.end();
+        game.batch.end();
+
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        }
     }
 
     /**
@@ -173,12 +188,8 @@ public class HomeScreen implements Screen {
 
         stage.dispose();
         menuSkin.dispose();
-        batch.dispose();
         bgTexture.dispose();
         menuTitle.dispose();
-
-        Audio.backgroundMusic.dispose();
-
     }
 
 

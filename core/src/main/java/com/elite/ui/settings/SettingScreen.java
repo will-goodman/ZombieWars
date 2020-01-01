@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
+import com.elite.ui.ZombieWars;
 import com.elite.ui.menu.HomeScreen;
 
 /**
@@ -35,10 +36,14 @@ public class SettingScreen implements Screen {
     private BitmapFont musicCheckboxFont;
     private BitmapFont volumeSoundFont;
     private BitmapFont soundCheckboxFont;
+    private CheckBox musicCheckbox;
+    private CheckBox soundCheckbox;
 
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
-    public SettingScreen(AudioSettings audioSettings) {
+    public SettingScreen(final ZombieWars game, AudioSettings audioSettings) {
+        this.game = game;
         this.audioSettings = audioSettings;
     }
 
@@ -53,16 +58,17 @@ public class SettingScreen implements Screen {
         Texture bgTexture = new Texture(Gdx.files.internal("maps/BG.png"));
         Image bg = new Image(bgTexture);
 
-        volumeMusicSlider = new Slider(0.1f, 1f, 0.1f, false, skin);
+        volumeMusicSlider = new Slider(0.0f, 1f, 0.1f, false, skin);
         volumeMusicSlider.setPosition(750, 350);
         volumeMusicSlider.setValue(1f);
-        volumeSoundSlider = new Slider(0.1f, 1f, 0.1f, false, skin);
+        volumeSoundSlider = new Slider(0.0f, 1f, 0.1f, false, skin);
         volumeSoundSlider.setPosition(750, 250);
         volumeSoundSlider.setValue(1f);
-        CheckBox musicCheckbox = new CheckBox(null, skin);
+        musicCheckbox = new CheckBox(null, skin);
         musicCheckbox.setPosition(800, 305);
-        CheckBox soundCheckbox = new CheckBox(null, skin);
+        soundCheckbox = new CheckBox(null, skin);
         soundCheckbox.setPosition(800, 205);
+
 
         batch = new SpriteBatch();
 
@@ -85,7 +91,7 @@ public class SettingScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(game, audioSettings));
             }
         });
 
@@ -106,14 +112,28 @@ public class SettingScreen implements Screen {
         volumeMusicSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                float sliderVolume = volumeMusicSlider.getValue();
+
                 audioSettings.setMusicVolume(volumeMusicSlider.getValue());
+                if (sliderVolume == 0.0f) {
+                    audioSettings.stopMusic();
+                } else {
+                    audioSettings.startMusic();
+                }
             }
         });
 
         volumeSoundSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                float sliderVolume = volumeSoundSlider.getValue();
+
                 audioSettings.setSoundEffectsVolume(volumeSoundSlider.getValue());
+                if (sliderVolume == 0.0f) {
+                    audioSettings.stopSoundEffects();
+                } else {
+                    audioSettings.startSoundEffects();
+                }
             }
         });
 
@@ -126,13 +146,6 @@ public class SettingScreen implements Screen {
 
 
         Gdx.input.setInputProcessor(stage);
-
-        if (audioSettings.playingMusic()) {
-            Audio.backgroundMusic.play();
-            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
-        } else {
-            Audio.backgroundMusic.stop();
-        }
 
     }
 
@@ -156,6 +169,16 @@ public class SettingScreen implements Screen {
         title.draw(batch, "Settings", 580, 600);
 
         batch.end();
+
+        soundCheckbox.setChecked(audioSettings.playingSoundEffects());
+        musicCheckbox.setChecked(audioSettings.playingMusic());
+
+        if (audioSettings.playingMusic()) {
+            Audio.backgroundMusic.play();
+            Audio.backgroundMusic.setVolume(audioSettings.getMusicVolume());
+        } else {
+            Audio.backgroundMusic.stop();
+        }
 
     }
 

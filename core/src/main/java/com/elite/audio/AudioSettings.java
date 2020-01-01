@@ -15,6 +15,14 @@ public class AudioSettings {
         this.playMusic = !this.playMusic;
     }
 
+    public void startMusic() {
+        this.playMusic = true;
+    }
+
+    public void stopMusic() {
+        this.playMusic = false;
+    }
+
     public float getMusicVolume() {
         return this.musicVolume;
     }
@@ -29,6 +37,14 @@ public class AudioSettings {
 
     public void toggleSoundEffects() {
         this.playSoundEffects = !this.playSoundEffects;
+    }
+
+    public void startSoundEffects() {
+        this.playSoundEffects = true;
+    }
+
+    public void stopSoundEffects() {
+        this.playSoundEffects = false;
     }
 
     public float getSoundEffectsVolume() {

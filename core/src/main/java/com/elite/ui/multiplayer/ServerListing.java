@@ -23,6 +23,7 @@ import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
+import com.elite.ui.ZombieWars;
 import com.elite.ui.menu.HomeScreen;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class ServerListing implements Screen {
 
     private ArrayList<Button> connectButtons = new ArrayList<>();
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
 
     /**
@@ -63,8 +65,8 @@ public class ServerListing implements Screen {
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public ServerListing(Client client, AudioSettings audioSettings) {
-
+    public ServerListing(final ZombieWars game, Client client, AudioSettings audioSettings) {
+        this.game = game;
         this.CLIENT = client;
         this.audioSettings = audioSettings;
 
@@ -106,7 +108,7 @@ public class ServerListing implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HomeScreen(game, audioSettings));
                 dispose();
             }
         });
@@ -114,7 +116,7 @@ public class ServerListing implements Screen {
         refreshButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -123,7 +125,7 @@ public class ServerListing implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //host lobby
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(CLIENT, audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LobbyCreation(game, CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -149,7 +151,6 @@ public class ServerListing implements Screen {
     @Override
     public void resize(int width, int height) {
         VIEWPORT.update(width, height);
-        System.out.println(width + " " + height);
         CAMERA.position.set(CAMERA.viewportWidth / 2, CAMERA.viewportHeight / 2, 0);
         CAMERA.update();
     }
@@ -235,18 +236,18 @@ public class ServerListing implements Screen {
                     System.out.println(listing.get(lobbyNum));
                     String[] lobbyDetails = listing.get(lobbyNum).split(" ");
                     if (lobbyDetails[2].equals("false")) {
-                        ClientGame game = new ClientGame(CLIENT, "Player2", audioSettings);
-                        CLIENT.setGame(game);
+                        ClientGame clientGame = new ClientGame(game, CLIENT, "Player2", audioSettings);
+                        CLIENT.setGame(clientGame);
 
 
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(game);
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(clientGame);
                         dispose();
 
                         CLIENT.connectLobby(lobbyDetails[0] + lobbyDetails[1], "Player2");
 
                         CLIENT.start();
                     } else {
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(new PasswordScreen(CLIENT, lobbyDetails, audioSettings));
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(new PasswordScreen(game, CLIENT, lobbyDetails, audioSettings));
                         dispose();
                     }
 

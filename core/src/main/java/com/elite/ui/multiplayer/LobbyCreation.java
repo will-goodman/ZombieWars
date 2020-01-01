@@ -22,6 +22,7 @@ import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.game.multiplayer.ClientGame;
 import com.elite.network.client.Client;
+import com.elite.ui.ZombieWars;
 
 /**
  * UI for creating a multiplayer lobby.
@@ -50,6 +51,7 @@ public class LobbyCreation implements Screen {
     private Label passwordLabel;
 
     private AudioSettings audioSettings;
+    private final ZombieWars game;
 
 
     /**
@@ -57,7 +59,8 @@ public class LobbyCreation implements Screen {
      *
      * @param client The Client on whose screen the home screen will be rendered
      */
-    public LobbyCreation(Client client, AudioSettings audioSettings) {
+    public LobbyCreation(final ZombieWars game, Client client, AudioSettings audioSettings) {
+        this.game = game;
         this.CLIENT = client;
         this.audioSettings = audioSettings;
     }
@@ -123,7 +126,7 @@ public class LobbyCreation implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(CLIENT, audioSettings));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new ServerListing(game, CLIENT, audioSettings));
                 dispose();
             }
         });
@@ -134,9 +137,9 @@ public class LobbyCreation implements Screen {
                 String lobbyName = serverNameTxt.getText();
                 String hostName = hostNameTxt.getText();
 
-                ClientGame game = new ClientGame(CLIENT, hostName, audioSettings);
-                CLIENT.setGame(game);
-                ((Game) Gdx.app.getApplicationListener()).setScreen(game);
+                ClientGame clientGame = new ClientGame(game, CLIENT, hostName, audioSettings);
+                CLIENT.setGame(clientGame);
+                ((Game) Gdx.app.getApplicationListener()).setScreen(clientGame);
                 dispose();
 
                 if (privateChkBox.isChecked()) {
