@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.elite.animations.SpriteAnimator;
 import com.elite.audio.AudioAccessor;
-import com.elite.entities.weapons.Bullet;
+import com.elite.entities.weapons.Bone;
 import com.elite.entities.weapons.Grenade;
 import com.elite.game.GameType;
 import com.elite.game.hud.Aim;
@@ -56,7 +56,7 @@ public class Zombie extends Sprite {
     public float vy = 0f;
     private HealthBar healthBar = new HealthBar(0, 0);
 
-    private ArrayList<Bullet> bullets;
+    private ArrayList<Bone> bones;
     private ArrayList<Grenade> grenades;
 
     private int numGrenades;
@@ -80,7 +80,7 @@ public class Zombie extends Sprite {
         spriteAnimator = new SpriteAnimator();
         MyInputProcessor inputProcessor = new MyInputProcessor(spriteRenderer);
         Gdx.input.setInputProcessor(inputProcessor);
-        bullets = new ArrayList<>();
+        bones = new ArrayList<>();
         grenades = new ArrayList<>();
         this.startingX = x;
         this.startingY = y;
@@ -184,8 +184,8 @@ public class Zombie extends Sprite {
      *
      * @return The list of all the bullets the Zombie currently has active.
      */
-    public ArrayList<Bullet> getBullets() {
-        return bullets;
+    public ArrayList<Bone> getBones() {
+        return bones;
     }
 
     /**
@@ -295,8 +295,8 @@ public class Zombie extends Sprite {
             grenade.render(batch);
         }
 
-        for (Bullet bullet : bullets) {
-            bullet.render(batch);
+        for (Bone bone : bones) {
+            bone.render(batch);
         }
 
         setPosition(body.getPosition().x, body.getPosition().y);
@@ -317,15 +317,15 @@ public class Zombie extends Sprite {
 
 
         // checking if bullets are ready to be removed from the world.
-        ArrayList<Bullet> bulletsToRemove = new ArrayList<>();
-        for (Bullet bullet : bullets) {
-            bullet.checkRemove();
-            if (bullet.getRemove()) {
-                world.destroyBody(bullet.getBody());
-                bulletsToRemove.add(bullet);
+        ArrayList<Bone> bulletsToRemove = new ArrayList<>();
+        for (Bone bone : bones) {
+            bone.checkRemove();
+            if (bone.getRemove()) {
+                world.destroyBody(bone.getBody());
+                bulletsToRemove.add(bone);
             }
         }
-        bullets.removeAll(bulletsToRemove);
+        bones.removeAll(bulletsToRemove);
 
         this.setPosition(body.getPosition().x, body.getPosition().y - zombie.height / 2);
     }
@@ -383,10 +383,10 @@ public class Zombie extends Sprite {
     public void shoot() {
         if (getAllowMove()) {
             if (walkingLeft) {
-                bullets.add(new Bullet(world, this, body.getPosition().x - 50, body.getPosition().y, true, -vy, this.isPlayerControlled, this.aim.getAngle()));
+                bones.add(new Bone(world, this, body.getPosition().x - 50, body.getPosition().y, true, -vy, this.isPlayerControlled, this.aim.getAngle()));
 
             } else {
-                bullets.add(new Bullet(world, this, body.getPosition().x + 70, body.getPosition().y, false, vy, this.isPlayerControlled, this.aim.getAngle()));
+                bones.add(new Bone(world, this, body.getPosition().x + 70, body.getPosition().y, false, vy, this.isPlayerControlled, this.aim.getAngle()));
             }
             spriteRenderer.reduceEnergy(EnergyCost.getBulletCost());
         }

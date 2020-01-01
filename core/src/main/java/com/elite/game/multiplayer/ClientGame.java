@@ -12,7 +12,7 @@ import com.elite.entities.characters.Zombie;
 import com.elite.entities.pickups.AmmoCrate;
 import com.elite.entities.pickups.Crate;
 import com.elite.entities.pickups.HealthCrate;
-import com.elite.entities.weapons.Bullet;
+import com.elite.entities.weapons.Bone;
 import com.elite.game.GameType;
 import com.elite.network.client.Client;
 import com.elite.game.hud.EnergyBar;
@@ -741,9 +741,9 @@ public class ClientGame extends RenderWorld implements GameType {
             if ((int) fixtureUserData2 == 50) {
                 Body body = contact.getFixtureB().getBody();
                 for (Zombie player : new ArrayList<>(zombies.values())) {
-                    for (Bullet bullet : player.getBullets()) {
-                        if (bullet.getBody() == body) {
-                            bullet.setRemove(true);
+                    for (Bone bone : player.getBones()) {
+                        if (bone.getBody() == body) {
+                            bone.setRemove(true);
                             for (Zombie victim : new ArrayList<>(zombies.values())) {
                                 if (victim.getUserData() == (int) fixtureUserData) {
                                     if (!((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {
@@ -759,9 +759,9 @@ public class ClientGame extends RenderWorld implements GameType {
             } else if ((int) fixtureUserData == 50) {
                 Body body = contact.getFixtureA().getBody();
                 for (Zombie player : new ArrayList<>(zombies.values())) {
-                    for (Bullet bullet : player.getBullets()) {
-                        if (bullet.getBody() == body) {
-                            bullet.setRemove(true);
+                    for (Bone bone : player.getBones()) {
+                        if (bone.getBody() == body) {
+                            bone.setRemove(true);
                             for (Zombie victim : new ArrayList<>(zombies.values())) {
                                 if (victim.getUserData() == (int) fixtureUserData2) {
                                     if (!((clientTeam.contains(player.getUserData()) && clientTeam.contains(victim.getUserData())) || (enemyTeam.contains(player.getUserData()) && enemyTeam.contains(victim.getUserData())))) {

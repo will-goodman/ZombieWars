@@ -11,7 +11,7 @@ import com.elite.entities.characters.Zombie;
 import com.elite.entities.pickups.AmmoCrate;
 import com.elite.entities.pickups.Crate;
 import com.elite.entities.pickups.HealthCrate;
-import com.elite.entities.weapons.Bullet;
+import com.elite.entities.weapons.Bone;
 import com.elite.game.GameType;
 import com.elite.game.logic.EnergyCost;
 import com.elite.game.world.RenderWorld;
@@ -588,9 +588,9 @@ public class SpriteRenderer extends RenderWorld implements GameType {
                     body = contact.getFixtureB().getBody();
                 }
                 for (Zombie player : new ArrayList<>(players)) {
-                    for (Bullet bullet : player.getBullets()) {
-                        if (bullet.getBody() == body) {
-                            bullet.setRemove(true);
+                    for (Bone bone : player.getBones()) {
+                        if (bone.getBody() == body) {
+                            bone.setRemove(true);
                             for (Zombie victim : new ArrayList<>(players)) {
                                 if (victim.getUserData() == (int) fixtureUserData || victim.getUserData() == (int) fixtureUserData2) {
                                     if (!((team1.contains(player) && team1.contains(victim)) || team2.contains(player) && team2.contains(victim))) {

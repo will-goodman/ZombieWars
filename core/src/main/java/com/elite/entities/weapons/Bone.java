@@ -8,11 +8,11 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.elite.entities.characters.Zombie;
 
 /**
- * Bullet entity fired by Zombies.
+ * Bone entity thrown by Zombies.
  *
  * @author Jacob Wheale
  */
-public class Bullet {
+public class Bone {
 
     private static Texture texture;
     private static World world;
@@ -76,15 +76,15 @@ public class Bullet {
      * @param playerControlled Whether the Zombie that shot this bullet is AI or not.
      * @param thita            The rotation of the bullet.
      */
-    public Bullet(World world, Zombie owner, float x, float y, boolean left, float vy, boolean playerControlled, float thita) {
-        Bullet.world = world;
+    public Bone(World world, Zombie owner, float x, float y, boolean left, float vy, boolean playerControlled, float thita) {
+        Bone.world = world;
         this.owner = owner;
         this.x = x;
         this.y = y;
         this.left = left;
 
         if (texture == null) {
-            texture = new Texture("bullet.png");
+            texture = new Texture("bone.png");
         }
 
         this.rotation = thita;
