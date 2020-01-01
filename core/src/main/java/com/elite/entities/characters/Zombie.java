@@ -1,4 +1,4 @@
-package com.elite.entities;
+package com.elite.entities.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.elite.animations.SpriteAnimator;
 import com.elite.audio.AudioAccessor;
+import com.elite.entities.weapons.Bullet;
+import com.elite.entities.weapons.Grenade;
 import com.elite.game.GameType;
 import com.elite.ui.Aim;
 import com.elite.ui.HealthBar;

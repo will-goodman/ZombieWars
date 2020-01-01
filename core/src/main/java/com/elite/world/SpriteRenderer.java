@@ -7,7 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.elite.audio.AudioAccessor;
-import com.elite.entities.*;
+import com.elite.entities.characters.Zombie;
+import com.elite.entities.pickups.AmmoCrate;
+import com.elite.entities.pickups.Crate;
+import com.elite.entities.pickups.HealthCrate;
+import com.elite.entities.weapons.Bullet;
 import com.elite.game.GameType;
 import com.elite.ui.EnergyBar;
 

@@ -1,10 +1,11 @@
-package com.elite.entities;
+package com.elite.entities.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.elite.entities.characters.Zombie;
 
 /**
  * Bullet entity fired by Zombies.
@@ -155,12 +156,11 @@ public class Bullet {
      *
      * @param batch The SpriteBatch object responsible for rendering.
      */
-    void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch) {
         if (left) {
             batch.draw(texture, x, y, WIDTH / 2f, HEIGHT / 2f, WIDTH, HEIGHT, 1, 1, -rotation, 0, 0, WIDTH, HEIGHT, false, false);
         } else {
             batch.draw(texture, x, y, WIDTH / 2f, HEIGHT / 2f, WIDTH, HEIGHT, 1, 1, -rotation, 0, 0, WIDTH, HEIGHT, false, false);
-
         }
         update();
     }
