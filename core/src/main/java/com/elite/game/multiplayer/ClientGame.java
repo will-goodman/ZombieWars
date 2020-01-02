@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.elite.audio.AudioAccessor;
+import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.game.entities.characters.Zombie;
 import com.elite.game.entities.pickups.AmmoCrate;
@@ -436,13 +436,17 @@ public class ClientGame extends RenderWorld implements GameType {
                 if (clientTeam.isEmpty()) {
                     showString = "Game Over! Opponent wins!";
                     if (!endMusicPlayed) {
-                        AudioAccessor.playSound("loss");
+                        if (audioSettings.playingSoundEffects()) {
+                            Audio.loss.play(audioSettings.getSoundEffectsVolume());
+                        }
                         endMusicPlayed = true;
                     }
                 } else {
                     showString = "Game Over! You win!";
                     if (!endMusicPlayed) {
-                        AudioAccessor.playSound("win");
+                        if (audioSettings.playingSoundEffects()) {
+                            Audio.win.play(audioSettings.getSoundEffectsVolume());
+                        }
                         endMusicPlayed = true;
                     }
                 }
@@ -506,19 +510,12 @@ public class ClientGame extends RenderWorld implements GameType {
         }
 
 
-        //Inputs which can be handled locally
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            AudioAccessor.switchMusic("testMusic");
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
+            audioSettings.toggleMusic();
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.O)) {
-            AudioAccessor.changeMusicVolume(100.0f, "testMusic");
-            System.out.println(AudioAccessor.getMusicVolume("testMusic"));
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
-            AudioAccessor.changeMusicVolume(-100.0f, "testMusic");
-            System.out.println(AudioAccessor.getMusicVolume("testMusic"));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+            audioSettings.toggleSoundEffects();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || quitLobby) {

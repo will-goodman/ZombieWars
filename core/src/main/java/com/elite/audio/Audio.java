@@ -15,5 +15,7 @@ public class Audio {
 
     public static Sound grenade = Gdx.audio.newSound(Gdx.files.internal("grenadeSound.mp3"));
     public static Sound jump = Gdx.audio.newSound(Gdx.files.internal("testSound.mp3"));
+    public static Sound win = Gdx.audio.newSound(Gdx.files.internal("winSound.mp3"));
+    public static Sound loss = Gdx.audio.newSound(Gdx.files.internal("loss.mp3"));
 
 }

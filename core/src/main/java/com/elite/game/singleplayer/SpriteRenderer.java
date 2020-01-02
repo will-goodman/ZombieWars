@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.elite.audio.AudioAccessor;
+import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.game.entities.characters.Zombie;
 import com.elite.game.entities.pickups.AmmoCrate;
@@ -256,13 +256,17 @@ public class SpriteRenderer extends RenderWorld implements GameType {
             if (team1.isEmpty()) {
                 showString = "Game Over! AI wins!";
                 if (!endMusicPlayed) {
-                    AudioAccessor.playSound("loss");
+                    if (audioSettings.playingSoundEffects()) {
+                        Audio.loss.play(audioSettings.getSoundEffectsVolume());
+                    }
                     endMusicPlayed = true;
                 }
             } else {
                 showString = "Game Over! You win!";
                 if (!endMusicPlayed) {
-                    AudioAccessor.playSound("win");
+                    if (audioSettings.playingSoundEffects()) {
+                        Audio.win.play(audioSettings.getSoundEffectsVolume());
+                    }
                     endMusicPlayed = true;
                 }
             }
@@ -396,11 +400,11 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         checkEnergy();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
-            AudioAccessor.switchMusic("testMusic");
+            audioSettings.toggleMusic();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-            AudioAccessor.allowSoundsSwitch();
+            audioSettings.toggleSoundEffects();
         }
 
 
