@@ -3,14 +3,14 @@ package com.elite.game.entities.characters;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.elite.audio.Audio;
+import com.elite.audio.AudioSettings;
 import com.elite.game.animations.SpriteAnimator;
-import com.elite.audio.AudioAccessor;
 import com.elite.game.entities.weapons.Bone;
 import com.elite.game.entities.weapons.Grenade;
 import com.elite.game.GameType;
@@ -18,6 +18,7 @@ import com.elite.game.hud.Aim;
 import com.elite.game.hud.HealthBar;
 import com.elite.game.logic.EnergyCost;
 import com.elite.game.world.MyInputProcessor;
+import com.elite.ui.ZombieWars;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,6 @@ public class Zombie extends Sprite {
     private static World world;
     private Body body;
     private Texture zombieTexture;
-    private SpriteBatch batch;
     private Rectangle zombie;
 
     private static final float LEFT_MAP_EDGE = 0f;
@@ -62,6 +62,9 @@ public class Zombie extends Sprite {
     private int numGrenades;
     private int footContacts;
 
+    private final ZombieWars game;
+    private AudioSettings audioSettings;
+
 
     /**
      * @param world          The physics world which the objects are simulated in.
@@ -71,8 +74,12 @@ public class Zombie extends Sprite {
      * @param userData       An integer value which is used to uniquely identify a character.
      * @param control        boolean value which says if the zombie is player controlled or not.
      */
-    public Zombie(World world, float x, float y, GameType spriteRenderer, int userData, boolean control) {
+    public Zombie(final ZombieWars game, AudioSettings audioSettings, World world, float x, float y, GameType spriteRenderer, int userData, boolean control) {
         super(new Texture(Gdx.files.internal("sprite/male/Idle (2).png")));
+
+        this.game = game;
+        this.audioSettings = audioSettings;
+
         zombieTexture = getTexture();
         Zombie.world = world;
         this.spriteRenderer = spriteRenderer;
@@ -208,7 +215,6 @@ public class Zombie extends Sprite {
      */
     private void createBody() {
         // Adding character to screen
-        batch = new SpriteBatch();
         Sprite sprite = new Sprite(zombieTexture);
 
         sprite.setScale(1 / 4f);
@@ -275,32 +281,32 @@ public class Zombie extends Sprite {
         }
         spriteAnimator.elapsedTime();
         TextureRegion textureRegion = spriteAnimator.getAnimation();
-        batch.begin();
+        game.batch.begin();
 
         if (this.isPlayerControlled) {
-            aim.drawDots(batch); //render aim
+            aim.drawDots(game.batch); //render aim
         }
-        aim.drawArrow(batch, walkingLeft);
+        aim.drawArrow(game.batch, walkingLeft);
         healthBar.updatePosition(getX(), getY(), health, this.userData);
-        healthBar.drawHealthBar(batch, this.userData, this.walkingLeft); //render health bar
+        healthBar.drawHealthBar(game.batch, this.userData, this.walkingLeft); //render health bar
 
         if (walkingLeft) {
-            batch.draw(textureRegion, this.getX() + 90, this.getY(), -ZombieAttributes.ZOMBIE_WIDTH, ZombieAttributes.ZOMBIE_HEIGHT);
+            game.batch.draw(textureRegion, this.getX() + 90, this.getY(), -ZombieAttributes.ZOMBIE_WIDTH, ZombieAttributes.ZOMBIE_HEIGHT);
         } else {
-            batch.draw(textureRegion, this.getX(), this.getY(), ZombieAttributes.ZOMBIE_WIDTH, ZombieAttributes.ZOMBIE_HEIGHT);
+            game.batch.draw(textureRegion, this.getX(), this.getY(), ZombieAttributes.ZOMBIE_WIDTH, ZombieAttributes.ZOMBIE_HEIGHT);
         }
 
 
         for (Grenade grenade : grenades) {
-            grenade.render(batch);
+            grenade.render(game.batch);
         }
 
         for (Bone bone : bones) {
-            bone.render(batch);
+            bone.render(game.batch);
         }
 
         setPosition(body.getPosition().x, body.getPosition().y);
-        batch.end();
+        game.batch.end();
 
         // checking grenade damage and removing them from the world
         ArrayList<Grenade> grenadesToRemove = new ArrayList<>();
@@ -310,7 +316,9 @@ public class Zombie extends Sprite {
                 grenadesToRemove.add(grenade);
                 spriteRenderer.checkGrenade(this, grenade.getX(), grenade.getY());
                 world.destroyBody(grenade.getBody());
-                AudioAccessor.playSound("grenade");
+                if (audioSettings.playingSoundEffects()) {
+                    Audio.grenade.play(audioSettings.getSoundEffectsVolume());
+                }
             }
         }
         grenades.removeAll(grenadesToRemove);
@@ -369,13 +377,15 @@ public class Zombie extends Sprite {
      * If they are, it will apply a force to the zombie and play a sound.
      */
     public void jump() {
-        AudioAccessor.playSound("testSound");
         if (footContacts > 0) {
             float impulse = body.getMass() * JUMP_IMPULSE;
             body.applyLinearImpulse(new Vector2(0, impulse), body.getWorldCenter(), true);
+
+            if (audioSettings.playingSoundEffects()) {
+                Audio.jump.play(audioSettings.getSoundEffectsVolume());
+            }
         }
     }
-
 
     /**
      * This method checks which direction the player is facing and adds a bullet to the array of bullets.

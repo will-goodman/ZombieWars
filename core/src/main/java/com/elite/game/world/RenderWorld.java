@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -26,8 +25,6 @@ public class RenderWorld implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private Vector3 mouse_position = new Vector3(0, 0, 0);
     private FitViewport viewport;
-
-    public SpriteBatch spriteBatch = new SpriteBatch();
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.

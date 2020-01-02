@@ -38,6 +38,8 @@ public class ZombieWars extends Game {
         batch.dispose();
         font.dispose();
         Audio.backgroundMusic.dispose();
+        Audio.grenade.dispose();
+        Audio.jump.dispose();
     }
 
 }

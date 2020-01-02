@@ -4,6 +4,7 @@ package com.elite.audio;
 /**
  * Allows static access to the AudioManagement class
  */
+@Deprecated
 public class AudioAccessor {
 
     private static AudioManagement audioManagement = new AudioManagement();

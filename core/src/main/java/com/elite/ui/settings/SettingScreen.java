@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.elite.audio.Audio;
 import com.elite.audio.AudioSettings;
 import com.elite.ui.ZombieWars;
@@ -27,10 +29,10 @@ import com.elite.ui.menu.HomeScreen;
 public class SettingScreen implements Screen {
 
     private Stage stage;
+    private OrthographicCamera camera;
     private Skin skin;
     private Slider volumeMusicSlider;
     private Slider volumeSoundSlider;
-    private SpriteBatch batch;
     private BitmapFont title;
     private BitmapFont volumeMusicFont;
     private BitmapFont musicCheckboxFont;
@@ -45,6 +47,13 @@ public class SettingScreen implements Screen {
     public SettingScreen(final ZombieWars game, AudioSettings audioSettings) {
         this.game = game;
         this.audioSettings = audioSettings;
+
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, 800, 480);
+
+        this.stage = new Stage(new ScreenViewport());
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     /**
@@ -52,7 +61,7 @@ public class SettingScreen implements Screen {
      */
     @Override
     public void show() {
-        stage = new Stage();
+
         skin = new Skin(Gdx.files.internal("setting_skin/glassy-ui.json"));
 
         Texture bgTexture = new Texture(Gdx.files.internal("maps/BG.png"));
@@ -68,9 +77,6 @@ public class SettingScreen implements Screen {
         musicCheckbox.setPosition(800, 305);
         soundCheckbox = new CheckBox(null, skin);
         soundCheckbox.setPosition(800, 205);
-
-
-        batch = new SpriteBatch();
 
         volumeMusicFont = new BitmapFont(Gdx.files.internal("setting_skin/font-big-export.fnt"));
         volumeMusicFont.getData().setScale(0.5f, 0.5f);
@@ -144,9 +150,6 @@ public class SettingScreen implements Screen {
         stage.addActor(soundCheckbox);
         stage.addActor(backButton);
 
-
-        Gdx.input.setInputProcessor(stage);
-
     }
 
     /**
@@ -159,16 +162,20 @@ public class SettingScreen implements Screen {
         Gdx.gl.glClearColor(0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act(delta);
         stage.draw();
 
-        batch.begin();
-        volumeMusicFont.draw(batch, "Music Volume", 500, 380);
-        musicCheckboxFont.draw(batch, "Music", 500, 330);
-        volumeSoundFont.draw(batch, "Sound Volume", 500, 280);
-        soundCheckboxFont.draw(batch, "Sound", 500, 230);
-        title.draw(batch, "Settings", 580, 600);
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
 
-        batch.end();
+        game.batch.begin();
+        volumeMusicFont.draw(game.batch, "Music Volume", 500, 380);
+        musicCheckboxFont.draw(game.batch, "Music", 500, 330);
+        volumeSoundFont.draw(game.batch, "Sound Volume", 500, 280);
+        soundCheckboxFont.draw(game.batch, "Sound", 500, 230);
+        title.draw(game.batch, "Settings", 580, 600);
+
+        game.batch.end();
 
         soundCheckbox.setChecked(audioSettings.playingSoundEffects());
         musicCheckbox.setChecked(audioSettings.playingMusic());
@@ -184,8 +191,7 @@ public class SettingScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -218,7 +224,6 @@ public class SettingScreen implements Screen {
         musicCheckboxFont.dispose();
         volumeSoundFont.dispose();
         soundCheckboxFont.dispose();
-        Audio.backgroundMusic.dispose();
     }
 
 }

@@ -98,7 +98,7 @@ public class ClientGame extends RenderWorld implements GameType {
         if (zombieName.equals("Player2")) {
 
             for (int i = 0, j = 101; j < 104; j++, i++) {
-                newZombie = new Zombie(world, 150f + 200 * i, 700f, this, j, false);
+                newZombie = new Zombie(game, audioSettings, world, 150f + 200 * i, 700f, this, j, false);
                 enemyTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
                 commands.put(Integer.toString(j), "NO-MOVEMENT");
@@ -106,7 +106,7 @@ public class ClientGame extends RenderWorld implements GameType {
             }
 
             for (int i = 0, j = 5; j < 8; j++, i++) {
-                newZombie = new Zombie(world, 750f + 200 * i, 700f, this, j, true);
+                newZombie = new Zombie(game, audioSettings,world, 750f + 200 * i, 700f, this, j, true);
                 System.out.println("Zombie X: " + (750f + 200 * i));
                 clientTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
@@ -122,7 +122,7 @@ public class ClientGame extends RenderWorld implements GameType {
         } else {
             //Otherwise we can just generate the client's zombies and the crates ourselves
             for (int i = 0, j = 101; j < 104; j++, i++) {
-                newZombie = new Zombie(world, 150f + 200 * i, 700f, this, j, true);
+                newZombie = new Zombie(game, audioSettings, world, 150f + 200 * i, 700f, this, j, true);
                 clientTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
                 commands.put(Integer.toString(j), "NO-MOVEMENT");
@@ -362,7 +362,7 @@ public class ClientGame extends RenderWorld implements GameType {
 
         //If a Zombie has de-synced, then re-render it in the right position
         if (editZombie) {
-            Zombie newZombie = new Zombie(world, editZombieX, editZombieY, this, Integer.parseInt(editZombieUserData), zombies.get(editZombieUserData).getIsPlayerControlled());
+            Zombie newZombie = new Zombie(game, audioSettings, world, editZombieX, editZombieY, this, Integer.parseInt(editZombieUserData), zombies.get(editZombieUserData).getIsPlayerControlled());
             zombies.put(editZombieUserData, newZombie);
             editZombie = false;
         }
@@ -371,7 +371,7 @@ public class ClientGame extends RenderWorld implements GameType {
         if (addZombie && !zombieName.equals("Player2")) {
             Zombie newZombie;
             for (int i = 0, j = 5; j < 8; j++, i++) {
-                newZombie = new Zombie(world, 750f + 200 * i, 700f, this, j, false);
+                newZombie = new Zombie(game, audioSettings, world, 750f + 200 * i, 700f, this, j, false);
                 System.out.println("Zombie X: " + (750f + 200 * i));
                 enemyTeam.add(j);
                 zombies.put(Integer.toString(j), newZombie);
@@ -430,7 +430,7 @@ public class ClientGame extends RenderWorld implements GameType {
                 }
             }
 
-            super.spriteBatch.begin();
+            game.batch.begin();
             if (gameIsOver) {
                 String showString;
                 if (clientTeam.isEmpty()) {
@@ -446,15 +446,15 @@ public class ClientGame extends RenderWorld implements GameType {
                         endMusicPlayed = true;
                     }
                 }
-                timeText.draw(super.spriteBatch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
+                timeText.draw(game.batch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
 
             } else {
-                timeText.draw(super.spriteBatch, "Time Left: " + value.format(60 - (currentTime - previousTime) / 1_000_000_000), (int) (((double) WorldAttributes.WORLD_WIDTH / (double) 3) - 120), 780);
+                timeText.draw(game.batch, "Time Left: " + value.format(60 - (currentTime - previousTime) / 1_000_000_000), (int) (((double) WorldAttributes.WORLD_WIDTH / (double) 3) - 120), 780);
                 if (clientTurn) {
-                    this.energyBar.renderEnergy(energy, super.spriteBatch); //draw energy bar
+                    this.energyBar.renderEnergy(energy, game.batch); //draw energy bar
                 }
             }
-            super.spriteBatch.end();
+            game.batch.end();
         } else {
             CLIENT.keyPress("NO-MOVEMENT", currentPlayer);
         }

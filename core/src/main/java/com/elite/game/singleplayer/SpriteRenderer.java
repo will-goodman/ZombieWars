@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.elite.audio.AudioAccessor;
+import com.elite.audio.AudioSettings;
 import com.elite.game.entities.characters.Zombie;
 import com.elite.game.entities.pickups.AmmoCrate;
 import com.elite.game.entities.pickups.Crate;
@@ -17,6 +18,7 @@ import com.elite.game.logic.EnergyCost;
 import com.elite.game.world.RenderWorld;
 import com.elite.game.world.WorldAttributes;
 import com.elite.game.hud.EnergyBar;
+import com.elite.ui.ZombieWars;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,11 +65,17 @@ public class SpriteRenderer extends RenderWorld implements GameType {
     private long startWalkTime;
     private boolean endMusicPlayed = false;
 
+    private AudioSettings audioSettings;
+    private final ZombieWars game;
+
     /**
      * Constructor which initalises variables and adds 3 Zombies to each team.
      * Also spawns in ammo and health crates.
      */
-    public SpriteRenderer() {
+    public SpriteRenderer(final ZombieWars game, AudioSettings audioSettings) {
+        this.game = game;
+        this.audioSettings = audioSettings;
+
         players = new ArrayList<>();
         deadPlayers = new ArrayList<>();
         usedCrates = new ArrayList<>();
@@ -78,8 +86,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         world.setContactListener(myContactListener);
 
         for (int i = 0, j = 5; j < 8; j++, i++) {
-            team1.add(new Zombie(world, 775f + 50 * i, 700f, this, j, true));
-            team2.add(new Zombie(world, 225f + (50 * i), 700f, this, j + 100, false));
+            team1.add(new Zombie(game, audioSettings, world, 775f + 50 * i, 700f, this, j, true));
+            team2.add(new Zombie(game, audioSettings, world, 225f + (50 * i), 700f, this, j + 100, false));
             players.add(team1.get(i));
             players.add(team2.get(i));
 
@@ -235,9 +243,12 @@ public class SpriteRenderer extends RenderWorld implements GameType {
             switchPlayer();
         }
 
-        super.spriteBatch.begin();
+        super.camera.update();
+        game.batch.setProjectionMatrix(super.camera.combined);
 
-        this.energyBar.renderEnergy(energy, super.spriteBatch); //draw energy bar
+        game.batch.begin();
+
+        this.energyBar.renderEnergy(energy, game.batch); //draw energy bar
 
         String showString;
         if (gameIsOver) {
@@ -261,8 +272,8 @@ public class SpriteRenderer extends RenderWorld implements GameType {
         } else {
             showString = "Next Turn Starts In: " + value.format(60 - (currentTime - previousTime) / 1_000_000_000);
         }
-        timeText.draw(super.spriteBatch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
-        super.spriteBatch.end();
+        timeText.draw(game.batch, showString, (WorldAttributes.WORLD_WIDTH / 3f) - 120, 780);
+        game.batch.end();
 
         for (Zombie player : players) {
             player.updatePlayer();

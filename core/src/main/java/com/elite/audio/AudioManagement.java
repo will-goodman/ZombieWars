@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  * Makes changes to the audio (music/sound effects) in the game
  */
+@Deprecated
 public class AudioManagement {
 
 
